@@ -1,0 +1,50 @@
+body{
+    background-color: #2f4050;
+}
+
+.col-sm-10 {
+    background-color: #ffffff;
+}
+
+.col-sm-2 h3 {
+    color: #f9f9f9;
+}
+
+#side-menu {
+    display: block;
+}
+
+#side-menu a {
+    color: #9fb1c2;
+}
+
+#side-menu a:hover {
+    color: #ffffff;
+    background-color: #1ab394;
+    font-weight: bold;
+}
+
+#side-menu a span {
+    padding-right: 0.5em;
+}
+
+#side-menu .active a {
+    color: #ffffff;
+    background-color: #27aae1;
+    font-weight: bold;
+}
+
+#footer {
+    margin: 0px 0px 10px 0px;
+    border: 2px solid #001110;
+    padding: 1em;
+    background-color: #4ea1d0;
+}
+#footer p {
+  
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+}
