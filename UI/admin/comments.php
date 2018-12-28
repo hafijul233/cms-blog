@@ -7,23 +7,13 @@
     <link href="../../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
     <link href="../../resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
-    <script src="../../resources/jquery/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="../../resources/jquery/jquery-3.2.1.js" type="text/javascript"></script>
   </head>
   <body>
       <div class="container-fluid">
           <div class="row">
-              <div class="col-sm-2">
-                  <h3>Admin Panel</h3>
-                  <ul id="side-menu" class="nav nav-pills nav-stacked">
-                      <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
-                      <li><a href="addnewpost.php"><span class="glyphicon glyphicon-list"></span> Add New Post</a></li>
-                      <li><a href="category.php"><span class="glyphicon glyphicon-tags"></span> Categories</a></li>
-                      <li><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admins</a></li>
-                      <li class="active"><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments</a></li>
-                      <li><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog's</a></li>
-                      <li><a href="login.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
-                  </ul>
-              </div><!-- Side Area -->
+              <?php include 'include/slidebar.php'; ?>
+              <!-- Side Area -->
               <div class="col-sm-10">
                 <section>
                   <h1>Comments</h1>
@@ -95,5 +85,6 @@
         include 'include/footer.php';
       ?>
     <script src="../../resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../resources/js/adminscript.js" type="text/javascript"></script>
   </body>
 </html>

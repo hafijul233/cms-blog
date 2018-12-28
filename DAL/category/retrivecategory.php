@@ -13,17 +13,14 @@
 
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                //print_r($row);
                 array_push($categorylist,$row);
-            }
-            
+            }   
         }
         else {
             
             array_push($categorylist, NULL);
             
             echo $conn->error();
-            die;
         }
         
         $conn->close();

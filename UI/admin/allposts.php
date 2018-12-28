@@ -88,7 +88,10 @@
       <?php
         include 'include/footer.php';
       ?>
-      <script type="text/javascript">
+    <script src="../../resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../resources/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="../../resources/js/adminscript.js" type="text/javascript"></script>
+       <script type="text/javascript">
           $(document).ready( function () {
             $('#categoryTable').DataTable({
                 "lengthchange" : true,
@@ -98,8 +101,5 @@
             } );
           } );
       </script>
-    <script src="../../resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="../../resources/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="../../resources/js/adminscript.js" type="text/javascript"></script>
   </body>
 </html>

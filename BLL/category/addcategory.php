@@ -1,5 +1,6 @@
 <?php
    include '../../utilities/session.php';
+   include '../../utilities/validator.php'; 
    include '../../DAL/category/insertcategory.php'; 
    include '../../DAL/dbconnection.php'; 
    
@@ -11,27 +12,14 @@
 
     $username = "Hafijul";
     
-    echo $categoryname . "-> Time: " . $currentdatetime;
+    $validationresult = categoryvaliadtor($categoryname);
     
-    if(empty($categoryname) || empty($username) || empty($currentdatetime)) {
+    if($validationresult != NULL) {
         
-        $_SESSION["error"] = "Category Name is Empty";
+        $_SESSION["error"] = $validationresult;
         
         $errortype = 'error';
-    }
-    
-    elseif (strlen($categoryname) > 100) {
         
-        $_SESSION["error"] = "Category Name is too Large. Acceptable Size(3 to 100)";
-        
-        $errortype = 'error';
-    }
-    
-    elseif (strlen($categoryname) < 3) {
-        
-        $_SESSION["error"] = "Category Name is too Small. Acceptable Size(3 to 100)";
-        
-        $errortype = 'error';
     }
     
     else {
