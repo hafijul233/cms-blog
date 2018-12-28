@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="#" class="navbar-brand">
-                    <img class="img-responsive" src="../../resources/img/headTitle.png" width="200px" />
+                    <img class="img-responsive" src="../../resources/img/headTitle.png" style="margin-top:-10px; width: 200px;" />
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="collapse">

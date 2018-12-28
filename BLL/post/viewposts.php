@@ -7,9 +7,9 @@ function getpostlist() {
 
     if (empty($postlist)) {
         ?>
-        <div class="post">
-            <h2 class="post-title">Empty List</h2>
-            <p class="post-description">There is no Post Entered... Please add new post <a href="#">Add ...</a></p>
+        <div class="blogpost">
+            <h2 class="blogpost-title">Empty List</h2>
+            <p class="blogpost-description">There is no Post Entered... Please add new post <a href="#">Add ...</a></p>
         </div>
         <?php
     } else {
@@ -20,7 +20,7 @@ function getpostlist() {
                     <h1 class="blogpost-title">
                         <?php echo htmlentities($post["title"]); ?>
                     </h1>
-                    <p class="text-capital">
+                    <p>
                     Category:
                         <label class="label label-info">
                             <?php echo htmlentities($post["categoryname"]); ?>
@@ -32,7 +32,7 @@ function getpostlist() {
                     </p>
                 </div>
                 <div class="blogpost-body">
-                    <img class="img-responsive" src="<?php echo "../../postcontent/image/" . $post["image"]; ?>"/>
+                    <img class="img img-responsive" src="<?php echo "../../postcontent/image/" . $post["image"]; ?>"/>
                     <div class="caption">
                         <p class="blogpost-description">
                             <?php 
