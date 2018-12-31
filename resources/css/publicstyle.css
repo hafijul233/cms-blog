@@ -52,6 +52,9 @@
 .blogpost-body img {
     position: relative;
     align-items: center;
+    vertical-align: central;
+    width: 100%;
+    height: auto;
 }
 
 .blogpost-description {

@@ -44,5 +44,14 @@
             return NULL;
     }
 
-    
+    function searchvaliadtor($search)
+    {
+        $search = strip_tags($search);
+        
+        $search = filter_var($search, FILTER_UNSAFE_RAW, FILTER_SANITIZE_STRING | FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);
+        
+        $search = preg_replace("/[^\w+\p{L}\p{N}\p{Pd}\$\.€%']/", ' ', $search);
+        
+        return $search;
+    }
     

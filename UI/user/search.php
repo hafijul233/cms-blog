@@ -6,7 +6,7 @@ include '../../utilities/message.php';
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Post Detail View</title>
+        <title>User Blog's Page</title>
         <link rel="icon" href="../../resources/img/icon.png" type="image/png" />
         <link href="../../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="../../resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
@@ -27,27 +27,21 @@ include '../../utilities/message.php';
             </div>
             <div class="row">
                 <div class="col-sm-8">
+                    
                     <?php
-                            include '../../BLL/post/postdetail.php';
-                            postdetail();
-                            
+                            include '../../BLL/post/searchpost.php';
                     ?>
-                </div>
-                <div class="col-sm-4">
-                    <div class="post">
-                        <h2 class="post-title">Test</h2>
-                        <p class="post-description">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting
-                            industry. Lorem Ipsum has been the industry's standard dummy text
-                            ever since the 1500s, when an unknown printer took a galley of type
-                            and scrambled it to make a type specimen book. It has survived not
-                            only five centuries, but also the leap into electronic typesetting,
-                            remaining essentially unchanged. It was popularised in the 1960s 
-                            with the release of Letraset sheets containing Lorem Ipsum passages,
-                            and more recently with desktop publishing software like Aldus 
-                            PageMaker including versions of Lorem Ipsum.<a href="#">Read More ...</a>
-                        </p>
-                    </div>
+                        <p class="text-info">Search Results for:
+                        <?php
+                            echo $_GET["searchvalue"] . "</p><hr>";
+                            $filename = "../../BLL/post/search/" . $_GET["searchvalue"] . ".json";
+                            if(file_exists($filename))
+                            {
+                                $data = file_get_contents($filename);
+                                $data = json_decode($data);
+                                viewresultpost($data);
+                            }
+                    ?>
                 </div>
             </div>
         </div>

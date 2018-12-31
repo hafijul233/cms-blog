@@ -12,7 +12,8 @@ function getpostlist() {
             <p class="blogpost-description">There is no Post Entered... Please add new post <a href="#">Add ...</a></p>
         </div>
         <?php
-    } else {
+    }
+    else {
         foreach ($postlist as $post) {
             ?>
             <div class="blogpost thumbnail">
@@ -34,7 +35,7 @@ function getpostlist() {
                 <div class="blogpost-body">
                     <img class="img img-responsive" src="<?php echo "../../postcontent/image/" . $post["image"]; ?>"/>
                     <div class="caption">
-                        <p class="blogpost-description">
+                        <div class="blogpost-description"><p>
                             <?php 
                             $postdescription = str_replace("</p>", "", str_replace("<p>","",$post["description"]));
                             if(strlen($postdescription) > 200){
@@ -46,8 +47,8 @@ function getpostlist() {
                                 echo $postdescription;
                             }
                             ?>
-                            <a class="pull-right" href="detailpost.php?id=<?php echo $post["id"]; ?>">Read More <span class="glyphicon glyphicon-arrow-right"></span></a>
-                        </p>
+                                <a class="pull-right" href="detailpost.php?id=<?php echo $post["id"]; ?>">Read More ....</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
