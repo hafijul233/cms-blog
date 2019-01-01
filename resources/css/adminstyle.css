@@ -1,15 +1,78 @@
+/* 
+    Created on : Jan 1, 2019, 11:53:45 AM
+    Author     : MD Hafijul Islam
+*/
+html,
 body{
+    height: 100%;
     background-color: #2f4050;
+    font-weight: 400;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.col-sm-10 {
-    background-color: #ffffff;
+.wrapper {
+  height: 100%;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-.col-sm-2 h3 {
-    color: #f9f9f9;
+.navbar-nav li {
+    font-weight: bold;
+    font-size: 1.1em;
+    font-family: Bitter, Georgia, "Times New Roman", serif;
 }
 
+.navbar-nav li:hover {
+    color: #ffffff;
+    background-color: #1ab394;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 5px;
+}
+
+.profile {
+    display: block;
+    margin: 10px 5px 10px 5px;
+}
+
+.profile-pic{
+    position: relative;
+    width: 70%;
+    align-items: center;
+    border: 3px solid #ffffff;
+}
+
+.profile-name {
+    display: inline;
+    position: relative;
+    color: #ffffff;
+    text-align: center;
+}
+
+.profile-name p {
+    padding-top: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.sidebar-form {
+    overflow: hidden;
+    text-overflow: clip;
+    display: block !important;
+    -webkit-transform: translateZ(0);
+    border-radius: 3px;
+    border: 1px solid #374850;
+}
+
+.sidebar-form input:focus {
+  border-color: transparent;
+}
+
+.sidebar-form > #search-btn {
+    margin-top: -2px;
+}
 #side-menu {
     display: block;
 }
@@ -34,24 +97,30 @@ body{
     font-weight: bold;
 }
 
-#footer {
-    margin: 0px 0px 10px 0px;
-    border: 2px solid #001110;
-    padding: 1em;
-    background-color: #4ea1d0;
-}
-#footer p {
-  
-  color: #ffffff;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: bold;
-  text-align: center;
+.col-sm-10 {
+    background-color: #ffffff;
 }
 
-.feild-info {
-    color: #ffb700;
+#footer {
+    margin: 0px 0px 10px 0px;
+    border-top: 1px solid #000000;
+    padding: 1em;
+    background-color: #211f22;
+    color: #eeeeee;
+    text-align: center;
+}
+#footer p {
+
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
     font-weight: bold;
-    font-size: 1.2em;
-    font-family: "Times New Roman";
+    text-align: center;
+}
+
+.contact-link {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
 }

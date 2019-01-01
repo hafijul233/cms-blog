@@ -1,3 +1,22 @@
+/* 
+    Created on : Jan 1, 2019, 11:53:45 AM
+    Author     : MD Hafijul Islam
+*/
+html,
+body{
+    height: 100%;
+    font-weight: 400;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.wrapper {
+  height: 100%;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .navbar-nav li {
     font-weight: bold;
     font-size: 1.1em;
@@ -12,12 +31,17 @@
     border-radius: 5px;
 }
 
+
 .blogpost {
     background-color: #f5f5f5;
     padding: 10px 10px 0px 10px;
     overflow: hidden;
 }
 
+.blogpost-detail {
+    padding: 10px 10px 0px 10px;
+    overflow: hidden;
+}
 .blogpost:hover {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -70,17 +94,26 @@
 
 #footer {
     margin: 0px 0px 10px 0px;
-    border: 2px solid #001110;
+    border-top: 1px solid #000000;
     padding: 1em;
-    background-color: #4ea1d0;
+    background-color: #211f22;
+    color: #eeeeee;
+    text-align: center;
 }
 #footer p {
-  
-  color: #ffffff;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: bold;
-  text-align: center;
+
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+.contact-link {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .feild-info {

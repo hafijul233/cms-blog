@@ -6,7 +6,7 @@
     <title>Comments</title>
     <link href="../../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="../../resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
+    <link href="../../resources/css/cmsblogstyle.css" rel="stylesheet" type="text/css"/>
     <script src="../../resources/jquery/jquery-3.2.1.js" type="text/javascript"></script>
   </head>
   <body>
