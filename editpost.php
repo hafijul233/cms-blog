@@ -4,40 +4,106 @@ require_once 'utilities/message.php';
 require_once 'utilities/validator.php';
 require_once 'utilities/dbconnection.php';
 
-//retrive All Inserted Categories
-$sql = "SELECT `id`, `name`, `categorycreator`, `datetime`, `status` FROM categories WHERE `status` = 1;";
+//Retrive Post t oedit
+if(isset($_GET["id"])) {
+        $id = $_GET["id"];
+        
+    $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description` "
+         . "FROM `userposts`, `categories` "
+         . "WHERE `userposts`.`status` = 1 "
+            . "AND `userposts`.`categoryno` = `categories`.`id` "
+            . "AND `userposts`.`id` = $id ;";
+    
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $post = $row;
+        }
+    } else {
+
+        $post = NULL;
+    }
+}
+//Retrive All Categories List on Form
+$sql = "SELECT `id`, `name` FROM categories WHERE `status` = 1;";
 $result = $conn->query($sql);
 $categorylist = array();
+
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         array_push($categorylist, $row);
     }
 } else {
+    echo $conn->error;
     array_push($categorylist, NULL);
-    echo $conn->error();
 }
-
 //$conn->close();
-// category insert code
-if (isset($_POST["submitbutton"])) {
+//Insert Post call
+if (isset($_POST["postentrybutton"])) {
     date_default_timezone_set("Asia/Dhaka");
     $currentdatetime = strftime("%d-%m-%Y %H:%M:%S", time());
-    $categoryname = mysqli_real_escape_string($conn, $_POST["categoryname"]);
-    $username = "Hafijul";
-    $validationresult = categoryvaliadtor($categoryname);
+    $posttitle = mysqli_real_escape_string($conn, $_POST["posttitle"]);
+    $categorynumber = mysqli_real_escape_string($conn, $_POST["categoryno"]);
+    $authorname = "Hafijul";
+    $postdescription = $_POST["postdescription"];
+    $validationresult = titlevaliadtor($posttitle);
     if ($validationresult != NULL) {
         $_SESSION["error"] = $validationresult;
         $errortype = 'error';
+        header("Location: addnewpost.php?type=" . $errortype);
     } else {
-        $sql = "INSERT INTO `categories`(`name`, `categorycreator`, `datetime`, `status`) "
-                . "VALUES ('$categoryname','$username','$currentdatetime', 1);";
+        //**************************************************************************
+        //Image UPLOAD Code
+
+        $target_dir = "postcontent/image/";
+        $target_file = $target_dir . basename($_FILES["postimage"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $extobj = new SplFileInfo(basename($_FILES["postimage"]["name"]));
+        $newname = $target_dir . md5(microtime()) . "." . $extobj->getExtension();
+        $target_file = $newname;  //refer new name to uploaded file dir  
+        $uploadOk = 1;
+        if (file_exists($target_file)) {                                        // Check if file already exists
+            $_SESSION["error"] = "Sorry, Image already exists.";
+            $uploadOk = 0;
+            $errortype = 'error';
+            header("Location: addnewpost.php?type=" . $errortype);
+        } else if ($_FILES["postimage"]["size"] > 10485760) { //10MB max          // Check file size
+            $_SESSION["error"] = "Sorry, your Image is too large.";
+            $uploadOk = 0;
+            $errortype = 'error';
+            header("Location: addnewpost.php?type=" . $errortype);
+        } else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") { // Allow certain file formats
+            $_SESSION["error"] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+            $errortype = 'error';
+            header("Location: addnewpost.php?type=" . $errortype);
+        } else if ($uploadOk == 0) {                                              // Check if $uploadOk is set to 0 by an error
+            $_SESSION["error"] = "There is an Error occured. Please Notify Admininstration.";
+            $errortype = 'error';
+            header("Location: addnewpost.php?type=" . $errortype);
+        } else {                                                                  // if everything is ok, try to upload file
+            if (move_uploaded_file($_FILES["postimage"]["tmp_name"], $target_file)) {
+                
+            } else {
+                $_SESSION["error"] = "Sorry, there was an error uploading your file.";
+                $errortype = 'failed';
+                header("Location: addnewpost.php?type=" . $errortype);
+            }
+        }
+        //**************************************************************************
+        $imageurl = basename($target_file);
+
+        $sql = "INSERT INTO `userposts`(`author`, `categoryno`, `datetime`, `title`, `image`, `post`, `status`) "
+                . "VALUES ('$authorname','$categorynumber','$currentdatetime','$posttitle','$imageurl','$postdescription', 1);";
         if ($conn->query($sql) === TRUE) {
-            $_SESSION["error"] = $categoryname . " is Added Successfully";
+            $_SESSION["error"] = "Post Added Successfully";
             $errortype = 'success';
-            header("Location:category.php?type=" . $errortype);
+            header("Location: addnewpost.php?type=" . $errortype);
         } else {
-            $_SESSION["error"] = $categoryname . " is Added Failed";
+            echo $conn->error;
+            $_SESSION["error"] = "There was an error while posting";
             $errortype = 'failed';
+            header("Location: addnewpost.php?type=" . $errortype);
         }
     }
 }
@@ -46,15 +112,12 @@ if (isset($_POST["submitbutton"])) {
 <html lang="en-US">
     <head>
         <meta charset="UTF-8">
-        <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
-        <title>Categories</title>
-        <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <title>Edit Post</title>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-        <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
         <script src="resources/jquery/jquery-3.2.1.js" type="text/javascript"></script>
     </head>
@@ -123,8 +186,8 @@ if (isset($_POST["submitbutton"])) {
                         <br/>
                         <ul id="side-menu" class="nav nav-pills nav-stacked">
                             <li ><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
-                            <li><a href="addnewpost.php"><span class="glyphicon glyphicon-list"></span> Add New Post</a></li>
-                            <li class="active"><a href="category.php"><span class="glyphicon glyphicon-tags"></span> Categories</a></li>
+                            <li class="active"><a href="addnewpost.php"><span class="glyphicon glyphicon-list"></span> Add New Post</a></li>
+                            <li ><a href="category.php"><span class="glyphicon glyphicon-tags"></span> Categories</a></li>
                             <li ><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admin's</a></li>
                             <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments</a></li>
                             <li ><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog</a></li>
@@ -132,89 +195,49 @@ if (isset($_POST["submitbutton"])) {
                         </ul>
                     </div>
                     <!-- / Left slide bar -->
-
+                    <!-- Main Content -->
                     <div class="col-sm-10">
-                        <h1>Manage Category</h1>
+                        <h1>Update Post</h1>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-lg-12">
                                 <?php
                                 message();
                                 ?>
-                                <form action="category.php" method="post">
+                                <form action="addnewpost.php" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="title"><span class="feild-info">Post Title:</span></label>
+                                        <input type="text" class="form-control" name="posttitle" value="<?php echo $post['title'];?>"/>
+                                    </div>
                                     <div class="form-group">
                                         <label for="categoryname"><span class="feild-info">Category Name:</span></label>
-                                        <input type="text" class="form-control" name="categoryname" />
+                                        <select class="form-control" name="categoryno">
+                                            <?php
+                                            if (empty($categorylist)) {
+                                                echo "<option value = \"N/A\"> There are no Category Found</option>";
+                                            } else {
+                                                foreach ($categorylist as $category) {
+                                                    echo "<option value = \"" . $category["id"] . "\">" . $category["name"] . "</option>\n";
+                                                }
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="post"><span class="feild-info">Post Description:</span></label>
+                                        <textarea value="<?php echo $post['description']; ?>" class="form-control textarea"  placeholder="Please Write something ....." name="postdescription" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="image"><span class="feild-info">Image:</span></label>
+                                        <input type="file" class="form-control" name="postimage" />
+                                    </div>
+
                                     <div class="col-lg-offset-4 col-lg-4">
-                                        <button type="submit" name="submitbutton" class="btn btn-success btn-lg btn-block">Submit</button>
+                                        <button type="submit" name="postentrybutton" class="btn btn-success btn-lg btn-block">Submit</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <span class="panel-title">
-                                            <p class="text-center text-capitalize"><span class="glyphicon glyphicon-tags"></span>  All Categories Table</p> 
-                                        </span>
-                                    </div>
-                                    <div class="panel-body">
-                                        <table id="categoryTable" class="table table-striped table-hover display">
-                                            <thead>
-                                                <tr>
-                                                    <th>ID Number</th>
-                                                    <th>Category</th>
-                                                    <th>User Created</th>
-                                                    <th>Date Time</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                if (empty($categorylist)) {
-                                                    echo "<tr>";
-                                                    echo "<td colspan=\"4\"> There are no Category Found</td>";
-                                                    echo "</tr>";
-                                                } else {
-                                                    //`id`, `name`, `categorycreator`, `datetime`, `created`, `modified`, `status`
-                                                    foreach ($categorylist as $category) {
-                                                        echo "<tr>";
-
-                                                        echo "<td>" . $category['id'] . "</td>";
-                                                        echo "<td>" . $category['name'] . "</td>";
-                                                        echo "<td>" . $category['categorycreator'] . "</td>";
-                                                        echo "<td>" . str_replace("-", "/", $category['datetime']) . "</td>";
-
-                                                        if ($category['status'] == 1)
-                                                            echo "<td>" . "<label class=\"label label-success\">active</div>" . "</td>";
-
-                                                        else if ($category['status'] == 0)
-                                                            echo "<td>" . "<label class=\"label label-danger\">closed</div>" . "</td>";
-                                                        else
-                                                            echo "<td>" . "<label class=\"label label-warning\">unknown</div>" . "</td>";
-
-                                                        echo "</tr>";
-                                                    }
-                                                }
-                                                ?>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>ID Number</th>
-                                                    <th>Category</th>
-                                                    <th>User Created</th>
-                                                    <th>Date Time</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
+                    </div>
                     <!-- Main Content -->
                 </div>
             </div>
@@ -230,16 +253,12 @@ if (isset($_POST["submitbutton"])) {
             <!-- / Footer -->
         </div>
         <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="resources/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="resources/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
         <script src="resources/js/adminscript.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#categoryTable').DataTable({
-                    "lengthchange": true,
-                    "seraching": false,
-                    "paging": true,
-                    "ordering": true
-                });
+        <script>
+            $(function () {
+                //bootstrap WYSIHTML5 - text editor
+                $(".textarea").wysihtml5();
             });
         </script>
     </body>

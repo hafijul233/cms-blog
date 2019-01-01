@@ -1,6 +1,25 @@
 <?php
-include 'utilities/session.php';
-include 'utilities/message.php';
+
+    require_once 'utilities/session.php';
+    require_once 'utilities/message.php';
+    require_once 'utilities/validator.php';
+    require_once 'utilities/dbconnection.php';
+    
+    $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description`, `userposts`.`status` FROM `userposts`, `categories` WHERE `userposts`.`status` = 1 AND `userposts`.`categoryno` = `categories`.`id` ORDER BY `userposts`.`id` DESC ;";
+    $result = $conn->query($sql);
+    $postslist = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($postslist, $row);
+        }
+    } else {
+
+        array_push($postslist, NULL);
+
+        echo $conn->error();
+    }
+    
+
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -10,8 +29,10 @@ include 'utilities/message.php';
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
         <title>Dashboard</title>
+        <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+        <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
         <script src="resources/jquery/jquery-3.2.1.js" type="text/javascript"></script>
     </head>
@@ -91,79 +112,75 @@ include 'utilities/message.php';
                     <!-- / Left slide bar -->
                     <!-- Main Content -->
                     <div class="col-sm-10">
-                        <h1>Dashboard</h1>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-                        <h4>Admin Dashboard</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                            Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                            natoque penatibus et magnis dis parturient montes, nascetur
-                            ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                            eu, pretium quis, sem. Nulla consequat massa quis enim.
-                        </p>
-
+                        <h1>Admin Dashboard</h1>
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <span class="panel-title">
+                                    <p class="text-center text-capitalize"><span class="glyphicon glyphicon-equalizer"></span>  Live Post Status Table</p> 
+                                </span>
+                            </div>
+                            <div class="panel-body">
+                                <table id="postTable" class="table table-striped table-hover display">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Title</th>
+                                            <th>Date & Time</th>
+                                            <th>Author</th>
+                                            <th>Categories</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                            <th>Detail</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if (empty($postslist)) {
+                                            echo "<tr>";
+                                            echo "<td colspan=\"8\"> There are no Category Found</td>";
+                                            echo "</tr>";
+                                        } else {
+                                            //`id`, `name`, `categorycreator`, `datetime`, `created`, `modified`, `status`
+                                            foreach ($postslist as $post) {
+                                              echo "<tr>";
+                                                echo "<td>" . $post['id'] . "</td>";
+                                                echo "<td>"; 
+                                                if(strlen($post['title'])>20)
+                                                    echo substr($post['title'], 0, 20) . "...</td>";
+                                                else
+                                                    echo $post['title'];
+                                                echo "</td>";
+                                                echo "<td>" . str_replace("-", "/", $post['createtime']) . "</td>";
+                                                echo "<td>" . $post['author'] . "</td>";
+                                                echo "<td>" ;
+                                                        $categories = explode(" ", $post['categoryname']);
+                                                        foreach ($categories as $category) {
+                                                            echo "<label class=\"label label-info\">" . $category . "</label>&nbsp"; 
+                                                        }
+                                                echo "</td>";
+                                                    if ($post['status'] == 1)
+                                                        echo "<td>" . "<label class=\"label label-success\">active</div>" . "</td>";
+                                                    else if ($post['status'] == 0)
+                                                        echo "<td>" . "<label class=\"label label-danger\">closed</div>" . "</td>";
+                                                    else
+                                                        echo "<td>" . "<label class=\"label label-warning\">unknown</div>" . "</td>";
+                                                ?>
+                                                    <td>
+                                                        <a href="editpost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span></button></a>&nbsp; &nbsp;
+                                                        <a href="deletepost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-danger" name="deletepost" id="deletepost"><span class="glyphicon glyphicon-erase"></span></button></a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="detailpost.php?id=<?php echo $post['id']; ?>" target="_blank"><button class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></button></a>
+                                                    </td>
+                                                    <?php
+                                              echo "</tr>";
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <!-- / Main Content -->
                 </div>
@@ -180,6 +197,12 @@ include 'utilities/message.php';
             <!-- / Footer -->
         </div>
         <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="resources/js/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="resources/js/adminscript.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready( function () {
+                $('#postTable').DataTable();
+            });
+        </script>
     </body>
 </html>
