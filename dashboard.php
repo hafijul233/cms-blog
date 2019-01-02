@@ -128,6 +128,7 @@
                                             <th>Date & Time</th>
                                             <th>Author</th>
                                             <th>Categories</th>
+                                            <th>Comments</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                             <th>Detail</th>
@@ -144,9 +145,9 @@
                                             foreach ($postslist as $post) {
                                               echo "<tr>";
                                                 echo "<td>" . $post['id'] . "</td>";
-                                                echo "<td>"; 
+                                                echo "<td class=\"table-post-title\">"; 
                                                 if(strlen($post['title'])>20)
-                                                    echo substr($post['title'], 0, 20) . "...</td>";
+                                                    echo substr($post['title'], 0, 20) . " ...</td>";
                                                 else
                                                     echo $post['title'];
                                                 echo "</td>";
@@ -158,6 +159,7 @@
                                                             echo "<label class=\"label label-info\">" . $category . "</label>&nbsp"; 
                                                         }
                                                 echo "</td>";
+                                                echo "<td>" . rand(1, 100) . "</td>";
                                                     if ($post['status'] == 1)
                                                         echo "<td>" . "<label class=\"label label-success\">active</div>" . "</td>";
                                                     else if ($post['status'] == 0)

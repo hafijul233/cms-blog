@@ -97,6 +97,10 @@ body{
     font-weight: bold;
 }
 
+.table-post-title {
+    color: #272ee1;
+    font-weight: bold;
+}
 .col-sm-10 {
     background-color: #ffffff;
 }
