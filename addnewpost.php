@@ -212,11 +212,12 @@ if (isset($_POST["postentrybutton"])) {
                                     </div>
 
                                     <div class="col-lg-offset-4 col-lg-4">
-                                        <button type="submit" name="postentrybutton" class="btn btn-success btn-lg btn-block">Submit</button>
+                                        <button type="submit" name="postentrybutton" class="btn btn-success btn-lg btn-block">Add Post</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
+                        <div style="height: 20px; width: auto;"></div>
                     </div>
                     <!-- Main Content -->
                 </div>

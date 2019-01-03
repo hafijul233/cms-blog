@@ -18,8 +18,6 @@
 
         echo $conn->error();
     }
-    
-
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -31,7 +29,6 @@
         <title>Dashboard</title>
         <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
         <script src="resources/jquery/jquery-3.2.1.js" type="text/javascript"></script>
@@ -53,7 +50,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
@@ -113,6 +110,9 @@
                     <!-- Main Content -->
                     <div class="col-sm-10">
                         <h1>Admin Dashboard</h1>
+                        <?php
+                            message();
+                        ?>
                         <div class="panel panel-success">
                             <div class="panel-heading">
                                 <span class="panel-title">
@@ -141,11 +141,11 @@
                                             echo "<td colspan=\"8\"> There are no Category Found</td>";
                                             echo "</tr>";
                                         } else {
-                                            //`id`, `name`, `categorycreator`, `datetime`, `created`, `modified`, `status`
+                                            $counter = 1;
                                             foreach ($postslist as $post) {
                                               echo "<tr>";
-                                                echo "<td>" . $post['id'] . "</td>";
-                                                echo "<td class=\"table-post-title\">"; 
+                                                echo "<td>" . $counter . "</td>";
+                                                echo "<td class=\"table-post-title\" title=\"" . $post['title'] ."\">"; 
                                                 if(strlen($post['title'])>20)
                                                     echo substr($post['title'], 0, 20) . " ...</td>";
                                                 else
@@ -169,13 +169,15 @@
                                                 ?>
                                                     <td>
                                                         <a href="editpost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span></button></a>&nbsp; &nbsp;
-                                                        <a href="deletepost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-danger" name="deletepost" id="deletepost"><span class="glyphicon glyphicon-erase"></span></button></a>
+                                                        <a href="deletepost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-danger" name="deletepost" id="deletepost" data-toggle="modal" data-target="#deleteModal" data-whe><span class="glyphicon glyphicon-erase"></span></button></a>
                                                     </td>
                                                     <td>
-                                                        <a href="detailpost.php?id=<?php echo $post['id']; ?>" target="_blank"><button class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></button></a>
+                                                        <a href="detailpost.php?id=<?php echo $post['id']; ?>" target="_blank"><button class="btn btn-success"><span class="glyphicon glyphicon-eye-open"></span></button></a>
                                                     </td>
                                                     <?php
                                               echo "</tr>";
+                                            
+                                            $counter++;  
                                             }
                                         }
                                         ?>
@@ -186,6 +188,26 @@
                     </div>
                     <!-- / Main Content -->
                 </div>
+                <!-- Delete Model -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h3 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-alert"></span>&nbsp;Warning Post Delete Confirmation</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure to Delete this post with add it's belonging.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger">Delete Post</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Delete Model -->
+
             </div>
             <!-- Footer -->
             <div id="footer">

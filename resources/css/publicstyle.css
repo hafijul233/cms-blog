@@ -31,6 +31,11 @@ body{
     border-radius: 5px;
 }
 
+#collapse .active li {
+    color: #ffffff;
+    background-color: #27aae1;
+    font-weight: bold;
+}
 
 .blogpost {
     background-color: #f5f5f5;

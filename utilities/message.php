@@ -1,7 +1,7 @@
 <?php
 
 function message() {
-    if (isset($_SESSION["error"]) && $_GET["type"]) {
+    if (isset($_SESSION["error"]) && isset($_GET["type"])) {
         $type = $_GET['type'];
         if ($type == 'error')
             echo "<div class =\"alert alert-warning\"><p class=\"text-center\">" . htmlentities($_SESSION["error"]) . "</p></div>";

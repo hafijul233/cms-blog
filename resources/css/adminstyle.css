@@ -101,6 +101,12 @@ body{
     color: #272ee1;
     font-weight: bold;
 }
+.feild-info {
+    color: #fbae2c;
+    font-family: Bitter,Georgia,"Times New Roman",Times,serif;
+    font-size: 1.2em;
+}
+
 .col-sm-10 {
     background-color: #ffffff;
 }

@@ -100,7 +100,7 @@
                 <div class="row">
                     <div class="col-sm-8">
                         <?php
-                        if (empty($allResultpostlist)) {
+                        if (empty($allResultpostlist) || $allResultpostlist[0]["id"] == NULL ) {
                             ?>
                             <div class="blogpost">
                                 <h2 class="blogpost-title">Empty List</h2>

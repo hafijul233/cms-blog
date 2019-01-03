@@ -4,7 +4,7 @@ require_once 'utilities/message.php';
 require_once 'utilities/validator.php';
 require_once 'utilities/dbconnection.php';
 
-//Retrive Post t oedit
+//Retrive Post to edit
 if(isset($_GET["id"])) {
         $id = $_GET["id"];
         
@@ -25,85 +25,86 @@ if(isset($_GET["id"])) {
     }
 }
 //Retrive All Categories List on Form
-$sql = "SELECT `id`, `name` FROM categories WHERE `status` = 1;";
+$sql = "SELECT `id`, `name` FROM `categories` WHERE `status` = 1;";
 $result = $conn->query($sql);
 $categorylist = array();
 
-if ($result->num_rows > 0) {
+if ($result->num_rows > 0) 
+    {
     while ($row = $result->fetch_assoc()) {
         array_push($categorylist, $row);
     }
-} else {
+}
+else {
     echo $conn->error;
     array_push($categorylist, NULL);
 }
-//$conn->close();
+
 //Insert Post call
-if (isset($_POST["postentrybutton"])) {
+if (isset($_POST["posteditbutton"])) {
+    $id = $_GET['id'];
     date_default_timezone_set("Asia/Dhaka");
     $currentdatetime = strftime("%d-%m-%Y %H:%M:%S", time());
     $posttitle = mysqli_real_escape_string($conn, $_POST["posttitle"]);
     $categorynumber = mysqli_real_escape_string($conn, $_POST["categoryno"]);
     $authorname = "Hafijul";
-    $postdescription = $_POST["postdescription"];
+    $postdescription = mysqli_real_escape_string($conn, $_POST["postdescription"]);
     $validationresult = titlevaliadtor($posttitle);
     if ($validationresult != NULL) {
         $_SESSION["error"] = $validationresult;
         $errortype = 'error';
-        header("Location: addnewpost.php?type=" . $errortype);
-    } else {
+        header("Location: editpost.php?id=" . $id . "&type=" . $errortype);
+    } 
+    else {
         //**************************************************************************
-        //Image UPLOAD Code
-
-        $target_dir = "postcontent/image/";
-        $target_file = $target_dir . basename($_FILES["postimage"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $extobj = new SplFileInfo(basename($_FILES["postimage"]["name"]));
-        $newname = $target_dir . md5(microtime()) . "." . $extobj->getExtension();
-        $target_file = $newname;  //refer new name to uploaded file dir  
-        $uploadOk = 1;
-        if (file_exists($target_file)) {                                        // Check if file already exists
-            $_SESSION["error"] = "Sorry, Image already exists.";
-            $uploadOk = 0;
-            $errortype = 'error';
-            header("Location: addnewpost.php?type=" . $errortype);
-        } else if ($_FILES["postimage"]["size"] > 10485760) { //10MB max          // Check file size
-            $_SESSION["error"] = "Sorry, your Image is too large.";
-            $uploadOk = 0;
-            $errortype = 'error';
-            header("Location: addnewpost.php?type=" . $errortype);
-        } else if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") { // Allow certain file formats
-            $_SESSION["error"] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-            $uploadOk = 0;
-            $errortype = 'error';
-            header("Location: addnewpost.php?type=" . $errortype);
-        } else if ($uploadOk == 0) {                                              // Check if $uploadOk is set to 0 by an error
-            $_SESSION["error"] = "There is an Error occured. Please Notify Admininstration.";
-            $errortype = 'error';
-            header("Location: addnewpost.php?type=" . $errortype);
-        } else {                                                                  // if everything is ok, try to upload file
-            if (move_uploaded_file($_FILES["postimage"]["tmp_name"], $target_file)) {
-                
-            } else {
-                $_SESSION["error"] = "Sorry, there was an error uploading your file.";
-                $errortype = 'failed';
-                header("Location: addnewpost.php?type=" . $errortype);
+        if (isset($_FILES["postimage"])) {
+            $imageurl = $post['image'];
+        } 
+        else {
+            //Image UPLOAD Code
+            $target_dir = "postcontent/image/";
+            $target_file = $target_dir . basename($_FILES["postimage"]["name"]);
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+            $extobj = new SplFileInfo(basename($_FILES["postimage"]["name"]));
+            $newname = $target_dir . md5(microtime()) . "." . $extobj->getExtension();
+            $target_file = $newname;  //refer new name to uploaded file dir  
+            $uploadOk = 1;
+            
+            if ($_FILES["postimage"]["size"] > 10485760) { //10MB max          // Check file size
+                $_SESSION["error"] = "Sorry, your Image is too large.";
+                $uploadOk = 0;
+                $errortype = 'error';
+                header("Location: editpost.php?id=" . $id . "&type=" . $errortype);
+            } 
+            else if ($uploadOk == 0) {                                              // Check if $uploadOk is set to 0 by an error
+                $_SESSION["error"] = "There is an Error occured. Please Notify Admininstration.";
+                $errortype = 'error';
+                header("Location: editpost.php?id=" . $id . "&type=" . $errortype);
+            } 
+            else {                                                                  // if everything is ok, try to upload file
+                if (move_uploaded_file($_FILES["postimage"]["tmp_name"], $target_file)) {
+                    
+                } else {
+                    $_SESSION["error"] = "Sorry, there was an error uploading your file.";
+                    $errortype = 'failed';
+                    header("Location: editpost.php?id=" . $id . "&type=" . $errortype);
+                }
             }
+            //**************************************************************************
+            $imageurl = basename($target_file);
         }
-        //**************************************************************************
-        $imageurl = basename($target_file);
-
-        $sql = "INSERT INTO `userposts`(`author`, `categoryno`, `datetime`, `title`, `image`, `post`, `status`) "
-                . "VALUES ('$authorname','$categorynumber','$currentdatetime','$posttitle','$imageurl','$postdescription', 1);";
+        
+        $sql ="UPDATE `userposts` SET `author` = '$authorname', `categoryno` = $categorynumber,`datetime` = '$currentdatetime',`title` = '$posttitle',`image`= '$imageurl',`post` = '$postdescription' WHERE `status` = 1 AND `id` = $id;";
         if ($conn->query($sql) === TRUE) {
-            $_SESSION["error"] = "Post Added Successfully";
+            $_SESSION["error"] = "Post Updated Successfully";
             $errortype = 'success';
-            header("Location: addnewpost.php?type=" . $errortype);
+            header("Location: editpost.php?id=" . $id . "&type=" . $errortype);
         } else {
-            echo $conn->error;
+            echo "Error: SQL: " . $sql . "\nDetail: " . $conn->error();
+            die;
             $_SESSION["error"] = "There was an error while posting";
             $errortype = 'failed';
-            header("Location: addnewpost.php?type=" . $errortype);
+            header("Location: editpost.php?id=" . $id . "&type=" . $errortype);
         }
     }
 }
@@ -187,7 +188,7 @@ if (isset($_POST["postentrybutton"])) {
                         <br/>
                         <ul id="side-menu" class="nav nav-pills nav-stacked">
                             <li ><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
-                            <li class="active"><a href="addnewpost.php"><span class="glyphicon glyphicon-list"></span> Add New Post</a></li>
+                            <li class="active"><a href="editpost.php"><span class="glyphicon glyphicon-list"></span> Add New Post</a></li>
                             <li ><a href="category.php"><span class="glyphicon glyphicon-tags"></span> Categories</a></li>
                             <li ><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admin's</a></li>
                             <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments</a></li>
@@ -204,17 +205,27 @@ if (isset($_POST["postentrybutton"])) {
                                 <?php
                                 message();
                                 ?>
-                                <form action="addnewpost.php" method="post" enctype="multipart/form-data">
+                                <form action="editpost.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="title"><span class="feild-info">Post Title:</span></label>
-                                        <input type="text" class="form-control" name="posttitle" value="<?php echo $post['title'];?>"/>
+                                        <input type="text" class="form-control" name="posttitle" value="<?php 
+                                        if(empty($post['title'])){
+                                            $post['title'] = NULL;
+                                        }else {
+                                            echo $post['title'];
+                                        }?>"/>
                                     </div>
                                     <div class="form-group">
-                                        <label for="categoryname"><span class="feild-info">Category Name:</span></label>
+                                        <label for="categoryname"><span class="feild-info">Category Name:</span>&nbsp;&nbsp; (Existed: <?php 
+                                        if(empty($post['categoryname'])){
+                                            $post['categoryname'] = NULL;
+                                        }else {
+                                            echo $post['categoryname'];
+                                        } ?>)</label>
                                         <select class="form-control" name="categoryno">
                                             <?php
                                             if (empty($categorylist)) {
-                                                echo "<option value = \"N/A\"> There are no Category Found</option>";
+                                                echo "<option value = \"N/A\" disabled>Not Available</option>";
                                             } else {
                                                 foreach ($categorylist as $category) {
                                                     echo "<option value = \"" . $category["id"] . "\">" . $category["name"] . "</option>\n";
@@ -225,19 +236,34 @@ if (isset($_POST["postentrybutton"])) {
                                     </div>
                                     <div class="form-group">
                                         <label for="post"><span class="feild-info">Post Description:</span></label>
-                                        <textarea value="<?php echo $post['description']; ?>" class="form-control textarea"  placeholder="Please Write something ....." name="postdescription" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                        <textarea class="form-control textarea"  placeholder="Please Write something ....." name="postdescription" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
+                                            <?php 
+                                            if(empty($post['description'])) {
+                                                $post['description'] = NULL;
+                                            }
+                                            else {
+                                                echo $post['description'];
+                                            }
+                                            ?>
+                                        </textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label for="image"><span class="feild-info">Image:</span></label>
+                                        <label for="image"><span>Existed Image:</span></label><br/>
+                                        <center>
+                                            <img src="postcontent/image/<?php echo $post['image']; ?>" class="img-responsive img-thumbnail" style="height: 256px;" >
+                                        </center>
+                                        <div style="height: 20px; width: auto;"></div>
+                                        <label for="image"><span class="feild-info">New Image:</span></label><br/>
                                         <input type="file" class="form-control" name="postimage" />
                                     </div>
 
                                     <div class="col-lg-offset-4 col-lg-4">
-                                        <button type="submit" name="postentrybutton" class="btn btn-success btn-lg btn-block">Submit</button>
+                                        <button type="submit" name="posteditbutton" class="btn btn-success btn-lg btn-block">Update Post</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
+                        <div style="height: 20px; width: auto;"></div>
                     </div>
                     <!-- Main Content -->
                 </div>
