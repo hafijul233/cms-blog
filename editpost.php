@@ -121,12 +121,12 @@ if (isset($_POST["posteditbutton"])) {
         <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
-        <script src="resources/jquery/jquery-3.2.1.js" type="text/javascript"></script>
+        <script src="resources/jquery/jquery-3.2.1.js" ></script>
     </head>
     <body>
         <div class="wrapper">
             <div style="height:10px; background-color:#27aae1;" ></div>
-            <nav class="navbar navbar-inverse" role="navigation" >
+            <nav class="navbar navbar-inverse"  >
                 <div id="header-title" class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="true" data-target="#collapse">
                         <span class="sr-only">Toggle Navigation</span>
@@ -279,9 +279,9 @@ if (isset($_POST["posteditbutton"])) {
             </div>
             <!-- / Footer -->
         </div>
-        <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="resources/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
-        <script src="resources/js/adminscript.js" type="text/javascript"></script>
+        <script src="resources/bootstrap/js/bootstrap.min.js" ></script>
+        <script src="resources/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" ></script>
+        <script src="resources/js/adminscript.js" ></script>
         <script>
             $(function () {
                 //bootstrap WYSIHTML5 - text editor

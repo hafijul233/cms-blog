@@ -28,15 +28,15 @@
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
         <title>Dashboard</title>
         <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
-        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
-        <script src="resources/jquery/jquery-3.2.1.js" type="text/javascript"></script>
+        <script src="resources/jquery/jquery-3.2.1.js" ></script>
     </head>
     <body>
         <div class="wrapper">
             <div style="height:10px; background-color:#27aae1;" ></div>
-            <nav class="navbar navbar-inverse" role="navigation" >
+            <nav class="navbar navbar-inverse"  >
                 <div id="header-title" class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="true" data-target="#collapse">
                         <span class="sr-only">Toggle Navigation</span>
@@ -220,10 +220,10 @@
             </div>
             <!-- / Footer -->
         </div>
-        <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="resources/js/jquery.dataTables.min.js" type="text/javascript"></script>
-        <script src="resources/js/adminscript.js" type="text/javascript"></script>
-        <script type="text/javascript">
+        <script src="resources/bootstrap/js/bootstrap.min.js" ></script>
+        <script src="resources/js/jquery.dataTables.min.js" ></script>
+        <script src="resources/js/adminscript.js" ></script>
+        <script >
             $(document).ready( function () {
                 $('#postTable').DataTable();
             });

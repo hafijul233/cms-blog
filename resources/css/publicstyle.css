@@ -97,6 +97,27 @@ body{
     text-decoration: none;
 }
 
+.comment-block{
+    background-color:#F6F7F9;
+    border-radius: 7px;
+    margin: 0px 0px 20px 0px;
+}
+.comment-info{
+    color: #3877ef;
+    font-family: sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 10px 0px 0px 0px;	
+}
+.comment{
+    margin-top:-2px;
+    padding-bottom: 17px;
+    font-size: 1.1em
+}
+.description{
+    color: #868686;
+    margin-top:-2px;
+}
 #footer {
     margin: 0px 0px 10px 0px;
     border-top: 1px solid #000000;
