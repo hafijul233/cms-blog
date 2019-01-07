@@ -86,7 +86,7 @@ if (isset($_POST["searchbutton"])) {
                     </div> 
                 </nav>
                 <div style="height:10px; background-color:#27aae1; margin-top: -20px;" ></div>
-                <div class="container-fluid">
+                <div class="container">
                 <?php
 					message();
                 ?>
@@ -98,12 +98,19 @@ if (isset($_POST["searchbutton"])) {
                 </div>
                 <div class="row">
                     <div class="col-sm-8">
+                        <div id="postlist">
                         <?php
                         if (empty($allResultpostlist) || $allResultpostlist[0]["id"] == NULL ) {
                             ?>
-                            <div class="blogpost">
-                                <h2 class="blogpost-title">Empty List</h2>
-                                <p class="blogpost-description">There is no Post Entered... Please add new post <a href="#">Add ...</a></p>
+                            <div class="blogpost thumbnail">
+                                <div class="blogpost-header">
+                                    <h2 class="blogpost-title">Empty List</h2>
+                                </div>
+                                <div class="blogpost-body">
+                                    <div class="blogpost-description">
+                                        <p>There is no Post Entered... Please add new post <a href="#">Add ...</a></p>
+                                    </div>
+                                </div>
                             </div>
                             <?php
                         } else {
@@ -146,7 +153,17 @@ if (isset($_POST["searchbutton"])) {
                             }
                         }
                         ?>
-                </div>
+                    </div>
+                    <center>
+                    <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center pagination-lg">
+                                    <li id="previous-page">
+                                        <a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>Previous</span></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                    </center>
+                    </div>
                 <div class="col-sm-4">
                     <div class="post">
                         <h2 class="post-title">Test</h2>
@@ -164,7 +181,7 @@ if (isset($_POST["searchbutton"])) {
                     </div>
                 </div>
             </div>
-        </div>
+                </div>
         <!-- Footer -->
             <div id="footer">
                 <hr/>
@@ -175,7 +192,6 @@ if (isset($_POST["searchbutton"])) {
                 <hr/>
             </div>
             <!-- / Footer -->
-        </div>
         <script src="resources/js/publicscript.js" ></script>
     </body>
 </html>

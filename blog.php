@@ -1,13 +1,12 @@
 <?php
 require_once 'utilities/RequiredUtilities.php';
 require_once 'utilities/dbconnection.php';
-
+//All Post 
 $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description` FROM `userposts`, `categories` WHERE `userposts`.`status` = 1 AND `userposts`.`categoryno` = `categories`.`id` ORDER BY `userposts`.`id` DESC ;";
 $result = $conn->query($sql);
 $postslist = array();
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        //print_r($row);
         array_push($postslist, $row);
     }
 } else {
@@ -15,6 +14,45 @@ if ($result->num_rows > 0) {
     array_push($postslist, NULL);
 
     echo $conn->error();
+}
+//All category
+$sql = "SELECT `name` "
+        . "FROM `categories` "
+        . "WHERE `categories`.`status` = 1 "
+        . " ORDER BY `created` DESC ;";
+$result = $conn->query($sql);
+$categorylist = array();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        array_push($categorylist, $row);
+    }
+} else {
+
+    array_push($categorylist, NULL);
+
+    echo $conn->error();
+}
+
+
+if (isset($_GET['category'])) {
+    $postslist = NULL;
+    $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description` "
+            . "FROM `userposts`, `categories` "
+            . "WHERE `userposts`.`status` = 1 "
+            . "AND `userposts`.`categoryno` = `categories`.`id` "
+            . "AND `categories`.`name` = '$categoryname'"
+            . "ORDER BY `userposts`.`created` DESC ;";
+
+    $result = $conn->query($sql);
+    $postslist = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($postslist, $row);
+        }
+    } else {
+        array_push($postslist, NULL);
+        echo $conn->error();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -58,7 +96,7 @@ if ($result->num_rows > 0) {
                         <div class="form-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." >
                         </div>
-                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                        <button type="submit" class="btn btn-default" name="searchbutton"><span class="glyphicon glyphicon-search"></span></button>
                     </form>
                 </div> 
             </nav>
@@ -163,11 +201,34 @@ if ($result->num_rows > 0) {
                             </p>
                         </div>
                     </div>
+                    <br/>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="panel panel-primary">
                                 <div class="panel panel-heading">
                                     <h2 class="panel-title">Categories</h2>
+                                </div>
+                                <div class="panel-body">
+                                    <?php
+                                    if(!empty($categorylist)) { ?>
+                                       <ul> 
+                                    <?php
+                                           foreach ($categorylist as $category) {
+                                        ?>
+                                           <li class="list-group-item"><a href="blog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name'];?></a></li>
+                                        <?php } ?>
+                                    </ul>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-success">
+                                <div class="panel panel-heading">
+                                    <h2 class="panel-title">Recent Posts</h2>
                                 </div>
                                 <div class="panel-body">
                                     <table class="table table-bordered table-responsive">
@@ -179,6 +240,7 @@ if ($result->num_rows > 0) {
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
