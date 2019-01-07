@@ -1,10 +1,8 @@
 <?php
-    require_once 'utilities/session.php';
-    require_once 'utilities/message.php';
-    require_once 'utilities/validator.php';
+    require_once 'utilities/RequiredUtilities.php';
     require_once 'utilities/dbconnection.php';
     
-    if (isset($_POST["searchbutton"])) {
+if (isset($_POST["searchbutton"])) {
     if (!empty($_POST["search"])) {
 
         $search = $_POST["search"];
@@ -36,8 +34,9 @@
             }
         }
     }
-
-    
+	else {
+		$searchvalue = NULL;
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -89,7 +88,7 @@
                 <div style="height:10px; background-color:#27aae1; margin-top: -20px;" ></div>
                 <div class="container-fluid">
                 <?php
-                echo message();
+					message();
                 ?>
                 <div class="blog-header">
                     <h1> Responsive CMS Blog</h1>

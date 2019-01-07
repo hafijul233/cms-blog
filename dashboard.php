@@ -1,23 +1,37 @@
 <?php
+require_once 'utilities/RequiredUtilities.php';
+require_once 'utilities/dbconnection.php';
 
-    require_once 'utilities/session.php';
-    require_once 'utilities/message.php';
-    require_once 'utilities/validator.php';
-    require_once 'utilities/dbconnection.php';
-    
-    $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description`, `userposts`.`status` FROM `userposts`, `categories` WHERE `userposts`.`status` = 1 AND `userposts`.`categoryno` = `categories`.`id` ORDER BY `userposts`.`id` DESC ;";
-    $result = $conn->query($sql);
-    $postslist = array();
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            array_push($postslist, $row);
-        }
-    } else {
+confirm_login();
 
-        array_push($postslist, NULL);
+$sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description`, `userposts`.`status` "
+        . "FROM `userposts`, `categories` "
+        . "WHERE `userposts`.`status` = 1 "
+        . "AND `userposts`.`categoryno` = `categories`.`id` "
+        . "ORDER BY `userposts`.`id` DESC ;";
 
-        echo $conn->error();
+$result = $conn->query($sql);
+$postslist = array();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        //sednig comments array one post array Comments
+        array_push($postslist, $row);
     }
+} else {
+
+    array_push($postslist, NULL);
+
+    echo $conn->error();
+}
+
+$sql = "SELECT COUNT(`id`) AS `disapproved` FROM `comments` WHERE `status` = 0;";
+
+$result = $conn->query($sql);
+$comments = NULL;
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $comments = $row['disapproved'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
@@ -73,12 +87,15 @@
                         <div class="row profile">
                             <div class="col-lg-12">
                                 <center>
-                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/admin.jpg" />
+                                    <img class="profile-pic" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" />
                                 </center>
                             </div>
                             <div class="col-lg-12">
                                 <div class="profile-name">
-                                    <p>Mohammad Hafijul Islam</p>
+                                    <p class="text-center"><?php echo $_SESSION['fullname']; ?>
+                                        <br>
+                                        <span style="color: limegreen; font-size: 1em; font-weight: normal;"><?php  echo "@" . $_SESSION['username']; ?></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +118,16 @@
                             <li ><a href="addnewpost.php"><span class="glyphicon glyphicon-list"></span> Add New Post</a></li>
                             <li ><a href="category.php"><span class="glyphicon glyphicon-tags"></span> Categories</a></li>
                             <li ><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admin's</a></li>
-                            <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments</a></li>
+                            <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments
+                                    <?php if ($comments != NULL) {
+                                        ?>
+                                        <label class="label label-warning pull-right">
+                                            <?php echo $comments;
+                                        }
+                                        ?>
+                                    </label>
+                                </a>
+                            </li>
                             <li ><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog</a></li>
                             <li ><a href="login.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                         </ul>
@@ -111,7 +137,7 @@
                     <div class="col-sm-10">
                         <h1>Admin Dashboard</h1>
                         <?php
-                            message();
+                        message();
                         ?>
                         <div class="panel panel-success">
                             <div class="panel-heading">
@@ -120,7 +146,7 @@
                                 </span>
                             </div>
                             <div class="panel-body">
-                                <table id="postTable" class="table table-striped table-hover display">
+                                <table id="postTable" class="table table-bordered table-striped table-hover display">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -143,44 +169,66 @@
                                         } else {
                                             $counter = 1;
                                             foreach ($postslist as $post) {
-                                              echo "<tr>";
+                                                echo "<tr>";
                                                 echo "<td>" . $counter . "</td>";
-                                                echo "<td class=\"table-post-title\" title=\"" . $post['title'] ."\">"; 
-                                                if(strlen($post['title'])>20)
+                                                echo "<td class=\"table-post-title\" title=\"" . $post['title'] . "\">";
+                                                if (strlen($post['title']) > 20)
                                                     echo substr($post['title'], 0, 20) . " ...</td>";
                                                 else
                                                     echo $post['title'];
                                                 echo "</td>";
                                                 echo "<td>" . str_replace("-", "/", $post['createtime']) . "</td>";
                                                 echo "<td>" . $post['author'] . "</td>";
-                                                echo "<td>" ;
-                                                        $categories = explode(" ", $post['categoryname']);
-                                                        foreach ($categories as $category) {
-                                                            echo "<label class=\"label label-info\">" . $category . "</label>&nbsp"; 
-                                                        }
+                                                echo "<td>";
+                                                $categories = explode(" ", $post['categoryname']);
+                                                foreach ($categories as $category) {
+                                                    echo "<label class=\"label label-info\">" . $category . "</label>&nbsp";
+                                                }
                                                 echo "</td>";
-                                                echo "<td>" . rand(1, 100) . "</td>";
-                                                    if ($post['status'] == 1)
-                                                        echo "<td>" . "<label class=\"label label-success\">active</div>" . "</td>";
-                                                    else if ($post['status'] == 0)
-                                                        echo "<td>" . "<label class=\"label label-danger\">closed</div>" . "</td>";
-                                                    else
-                                                        echo "<td>" . "<label class=\"label label-warning\">unknown</div>" . "</td>";
-                                                ?>
-                                                    <td>
-                                                        <a href="editpost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span></button></a>&nbsp; &nbsp;
-                                                        <a href="deletepost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-danger" name="deletepost" id="deletepost" data-toggle="modal" data-target="#deleteModal" data-whe><span class="glyphicon glyphicon-erase"></span></button></a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="detailpost.php?id=<?php echo $post['id']; ?>" target="_blank"><button class="btn btn-success"><span class="glyphicon glyphicon-eye-open"></span></button></a>
-                                                    </td>
-                                                    <?php
-                                              echo "</tr>";
-                                            
-                                            $counter++;  
+                                                echo "<td>";
+                                                $postid = $post['id'];
+                                                $sql = "SELECT COUNT(CASE WHEN `status` = 1 THEN 1 END) AS `approved`, COUNT(CASE WHEN `status` = 0 THEN 1 END) AS `disapproved` "
+                                                        . "FROM `comments` WHERE `postid` = $postid;";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    $status = $result->fetch_assoc();
+                                                    $approved = $status['approved'];
+                                                    $disapproved = $status['disapproved'];
+                                                } else {
+                                                    $approved = NULL;
+                                                    $disapproved = NULL;
+                                                }
+                                                if (!empty($disapproved)) {
+                                                    ?>
+                                                <label class="label label-danger pull-left"><?php echo $disapproved; ?></label>
+                                                <?php
                                             }
+                                            if (!empty($approved)) {
+                                                ?>
+                                                <label class="label label-success pull-right"><?php echo $approved; ?></label>
+                                                <?php
+                                            }
+                                            echo "</td>";
+                                            if ($post['status'] == 1) {
+                                                echo "<td><label class=\"btn btn-success\">ON</label></td>";
+                                            } else {
+                                                echo "<td><label class=\"btn btn-default\">OFF</label></td>";
+                                            }
+                                            ?>
+                                            <td>
+                                                <a href="editpost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span></button></a>&nbsp; &nbsp;
+                                                <a href="deletepost.php?id=<?php echo $post['id']; ?>"><button class="btn btn-danger"><span class="glyphicon glyphicon-erase"></span></button></a>
+                                            </td>
+                                            <td>
+                                                <a href="detailpost.php?id=<?php echo $post['id']; ?>" target="_blank"><button class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></button></a>
+                                            </td>
+                                            <?php
+                                            echo "</tr>";
+
+                                            $counter++;
                                         }
-                                        ?>
+                                    }
+                                    ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -188,26 +236,6 @@
                     </div>
                     <!-- / Main Content -->
                 </div>
-                <!-- Delete Model -->
-                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h3 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-alert"></span>&nbsp;Warning Post Delete Confirmation</h3>
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure to Delete this post with add it's belonging.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">Delete Post</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- / Delete Model -->
-
             </div>
             <!-- Footer -->
             <div id="footer">
@@ -224,7 +252,7 @@
         <script src="resources/js/jquery.dataTables.min.js" ></script>
         <script src="resources/js/adminscript.js" ></script>
         <script >
-            $(document).ready( function () {
+            $(document).ready(function () {
                 $('#postTable').DataTable();
             });
         </script>

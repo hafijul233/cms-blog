@@ -1,11 +1,12 @@
+
 <?php
-require_once 'utilities/session.php';
-require_once 'utilities/message.php';
-require_once 'utilities/validator.php';
+require_once 'utilities/RequiredUtilities.php';
 require_once 'utilities/dbconnection.php';
 
-//retrive All Inserted Categories
-$sql = "SELECT `id`, `name`, `categorycreator`, `datetime`, `status` FROM categories WHERE `status` = 1;";
+confirm_login();
+
+//retrive All Existing Categories
+$sql = "SELECT `id`, `name`, `categorycreator`, `datetime`, `status` FROM `categories`;";
 $result = $conn->query($sql);
 $categorylist = array();
 if ($result->num_rows > 0) {
@@ -17,20 +18,19 @@ if ($result->num_rows > 0) {
     echo $conn->error();
 }
 
-//$conn->close();
 // category insert code
 if (isset($_POST["submitbutton"])) {
     date_default_timezone_set("Asia/Dhaka");
     $currentdatetime = strftime("%d-%m-%Y %H:%M:%S", time());
     $categoryname = mysqli_real_escape_string($conn, $_POST["categoryname"]);
-    $username = "Hafijul";
+    $username = $_SESSION['fullname'];
     $validationresult = categoryvaliadtor($categoryname);
     if ($validationresult != NULL) {
         $_SESSION["error"] = $validationresult;
         $errortype = 'error';
     } else {
         $sql = "INSERT INTO `categories`(`name`, `categorycreator`, `datetime`, `status`) "
-                . "VALUES ('$categoryname','$username','$currentdatetime', 1);";
+                . "VALUES ('$categoryname','$username','$currentdatetime', 0);";
         if ($conn->query($sql) === TRUE) {
             $_SESSION["error"] = $categoryname . " is Added Successfully";
             $errortype = 'success';
@@ -39,6 +39,35 @@ if (isset($_POST["submitbutton"])) {
             $_SESSION["error"] = $categoryname . " is Added Failed";
             $errortype = 'failed';
         }
+    }
+}
+
+//Category Approve, Un Approve , Deleted Code
+if (isset($_GET['id']) && isset($_GET['action'])) {
+    $categoryid = $_GET['id'];
+    $action = $_GET['action'];
+
+    $sql = "UPDATE `categories` SET `status` = ";
+
+    if ($action == "OK") {
+        $sql .= "1 WHERE `id` = $categoryid;";
+        $msg = "Category Approved";
+    } else if ($action == "NOTOK") {
+        $sql .= "0 WHERE `id` = $categoryid;";
+        $msg = "Category Unapproved";
+    } else if ($action == "DELETE") {
+        $sql = "DELETE FROM `categories` WHERE `categories`.`id` = $categoryid;";
+        $msg = "Category Deleted";
+    }
+
+    if ($conn->query($sql) === TRUE) {
+        $_SESSION["error"] = $msg;
+        $errortype = 'success';
+        header("Location: category.php?type=" . $errortype);
+    } else {
+        $_SESSION["error"] = "There was an error while proccessing";
+        $errortype = 'failed';
+        header("Location: category.php?type=" . $errortype);
     }
 }
 ?>
@@ -75,7 +104,7 @@ if (isset($_POST["submitbutton"])) {
                 </div>
                 <div class="collapse navbar-collapse" id="collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
@@ -98,12 +127,15 @@ if (isset($_POST["submitbutton"])) {
                         <div class="row profile">
                             <div class="col-lg-12">
                                 <center>
-                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/admin.jpg" />
+                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" />
                                 </center>
                             </div>
                             <div class="col-lg-12">
                                 <div class="profile-name">
-                                    <p>Mohammad Hafijul Islam</p>
+                                    <p class="text-center"><?php echo $_SESSION['fullname']; ?>
+                                        <br>
+                                        <span style="color: limegreen; font-size: 1em; font-weight: normal;"><?php  echo "@" . $_SESSION['username']; ?></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -132,7 +164,6 @@ if (isset($_POST["submitbutton"])) {
                         </ul>
                     </div>
                     <!-- / Left slide bar -->
-
                     <div class="col-sm-10">
                         <h1>Manage Category</h1>
                         <div class="row">
@@ -164,51 +195,72 @@ if (isset($_POST["submitbutton"])) {
                                         <table id="categoryTable" class="table table-striped table-hover display">
                                             <thead>
                                                 <tr>
-                                                    <th>ID Number</th>
-                                                    <th>Category</th>
-                                                    <th>User Created</th>
-                                                    <th>Date Time</th>
+                                                    <th>ID No</th>
+                                                    <th class="text-center">Category</th>
+                                                    <th>User Added</th>
+                                                    <th class="text-center">Date Time</th>
                                                     <th>Status</th>
+                                                    <th>Approve</th>
+                                                    <th class="text-center">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 if (empty($categorylist)) {
                                                     echo "<tr>";
-                                                    echo "<td colspan=\"4\"> There are no Category Found</td>";
+                                                    echo "<td colspan=\"6\"> There are no Category Found</td>";
                                                     echo "</tr>";
                                                 } else {
-                                                    //`id`, `name`, `categorycreator`, `datetime`, `created`, `modified`, `status`
                                                     foreach ($categorylist as $category) {
-                                                        echo "<tr>";
-
-                                                        echo "<td>" . $category['id'] . "</td>";
-                                                        echo "<td>" . $category['name'] . "</td>";
-                                                        echo "<td>" . $category['categorycreator'] . "</td>";
-                                                        echo "<td>" . str_replace("-", "/", $category['datetime']) . "</td>";
-
-                                                        if ($category['status'] == 1)
-                                                            echo "<td>" . "<label class=\"label label-success\">active</div>" . "</td>";
-
-                                                        else if ($category['status'] == 0)
-                                                            echo "<td>" . "<label class=\"label label-danger\">closed</div>" . "</td>";
-                                                        else
-                                                            echo "<td>" . "<label class=\"label label-warning\">unknown</div>" . "</td>";
-
-                                                        echo "</tr>";
-                                                    }
-                                                }
-                                                ?>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>ID Number</th>
-                                                    <th>Category</th>
-                                                    <th>User Created</th>
-                                                    <th>Date Time</th>
-                                                    <th>Status</th>
+                                                        ?>
+                                                        <tr>
+                                                            <td>
+                                                                <?php echo $category['id']; ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php echo $category['name']; ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php echo $category['categorycreator']; ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php echo str_replace("-", "/", $category['datetime']); ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php
+                                                                if ($category['status'] == 1) {
+                                                                    ?>
+                                                                    <label class="btn btn-success">ON</label>
+                                                                    <?php
+                                                                } else {
+                                                                    ?>
+                                                                    <label class="btn btn-default">OFF</label>
+                                                                <?php } ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php
+                                                                if ($category['status'] == 0) {
+                                                                    ?>
+                                                                    <a href="category.php?id=<?php echo $category['id'] . "&action=OK"; ?>"><button class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span></button></a>&nbsp;&nbsp;
+                                                                    <?php
+                                                                } if ($category['status'] == 1) {
+                                                                    ?>
+                                                                    <a href="category.php?id=<?php echo $category['id'] . "&action=NOTOK"; ?>"><button class="btn btn-primary"><span class="glyphicon glyphicon-remove-sign"></span></button></a>
+                                                                <?php }
+                                                                ?>
+                                                            </td>
+                                                            <td>
+                                                    <center>
+                                                        <a href="category.php?id=<?php echo $category['id'] . "&action=EDIT"; ?>"><button class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span></button></a>&nbsp;&nbsp;
+                                                        <a href="category.php?id=<?php echo $category['id'] . "&action=DELETE"; ?>"><button class="btn btn-danger"><span class="glyphicon glyphicon-erase"></span></button></a>
+                                                    </center>
+                                                    </td>
                                                 </tr>
-                                            </tfoot>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>

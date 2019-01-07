@@ -1,6 +1,5 @@
 <?php
-    include '../../utilities/session.php';
-    include '../../utilities/message.php';
+    require_once 'utilities/RequiredUtilities.php';
 ?>
 <!DOCTYPE html>
 <html lang="en-US">

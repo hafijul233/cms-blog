@@ -1,8 +1,8 @@
 <?php
-    require_once 'utilities/session.php';
-    require_once 'utilities/message.php';
-    require_once 'utilities/validator.php';
+    require_once 'utilities/RequiredUtilities.php';
     require_once 'utilities/dbconnection.php';
+
+confirm_login();
     
     if (isset($_GET["id"])) {
     $id = $_GET["id"];
@@ -18,10 +18,8 @@
         $row = $result->fetch_assoc();
         $post = $row;
     } else {
-
         $post = NULL;
     }
-
     $sql = "SELECT `name`, `comments`, `datetime` FROM `comments` "
             . "WHERE `status` = 1 "
             . "AND `postid` = $id;";
@@ -45,9 +43,9 @@
     $currentdatetime = strftime("%d-%m-%Y %H:%M:%S", time());
     $name = mysqli_real_escape_string($conn, $_POST["name"]);
     $email = mysqli_real_escape_string($conn, $_POST["email"]);
-    $authorname = "Hafijul";
-    $admin = "hafijul233";
-    $comment = $_POST["comment"];
+    $authorname = $_SESSION['fullname'];
+    $admin = "Pending";
+    $comment = divremover($_POST["comment"]);
     $postid = $_GET["id"];
     
     if (empty ($email) || empty ($name) || empty($comment)) {
@@ -57,8 +55,8 @@
     }
     else {
         
-        $sql = "INSERT INTO `comments`(`postid`, `authorname`, `name`, `emailaddress`, `comments`, `datetime`, `approvedby`, `status`)" .
-               "VALUES ($postid, '$authorname', '$name', '$email', '$comment', '$currentdatetime', '$admin', 0);";
+        $sql = "INSERT INTO `comments`(`postid`, `name`, `emailaddress`, `comments`, `datetime`, `approvedby`, `status`)" .
+               "VALUES ($postid, '$name', '$email', '$comment', '$currentdatetime', '$admin', 0);";
         if ($conn->query($sql) === TRUE) {
             $_SESSION["error"] = "Comment Received Successfully. Waiting for admin Approveal.";
             $errortype = 'success';
@@ -105,7 +103,7 @@
                 <div class="collapse navbar-collapse" id="collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                        <li><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
+                        <li class="active"><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
@@ -149,22 +147,29 @@
                                         <?php echo htmlentities($post["title"]); ?>
                                     </h1>
                                     <p>
-                                        Category:
-                                        <label class="label label-info">
-                                            <?php echo htmlentities($post["categoryname"]); ?>
-                                        </label>&nbsp;&nbsp;&nbsp;&nbsp;Published on : 
-                                        <?php echo date_format(date_create($post["createtime"]), "F d, Y"); ?>
-                                    </p>
+                                                <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                                                    <label class="label label-info">
+                                                        <?php echo htmlentities($post["categoryname"]); ?>
+                                                    </label>,&nbsp;&nbsp;
+                                                <span class="glyphicon glyphicon-user"></span>&nbsp;
+                                                    <label class="text-info">
+                                                        <?php echo $post["author"]; ?>
+                                                    </label>,&nbsp;&nbsp;
+                                                <span class="glyphicon glyphicon-time"></span>&nbsp; 
+                                                    <label>
+                                                        <?php echo date_format(date_create($post["createtime"]), "F d, Y"); ?>
+                                                    </label>
+                                            </p>
                                 </div>
                                 <div class="blogpost-body">
                                     <img class="img img-responsive" src="<?php echo "postcontent/image/" . $post["image"]; ?>"/>
                                     <div class="caption">
-                                        <div class="blogpost-description"><p>
+                                        <div class="blogpost-description">
                                                 <?php
-                                                $postdescription = str_replace("</p>", "", str_replace("<p>", "", $post["description"]));
-                                                echo $postdescription;
+                                                //$postdescription = str_replace("</p>", "", str_replace("<p>", "", $post["description"]));
+                                                echo nl2br($post['description']);
                                                 ?>
-                                            </p>
+                                            
                                         </div>
                                     </div>
                                 </div>

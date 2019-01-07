@@ -1,8 +1,8 @@
 <?php
-require_once 'utilities/session.php';
-require_once 'utilities/message.php';
-require_once 'utilities/validator.php';
+require_once 'utilities/RequiredUtilities.php';
 require_once 'utilities/dbconnection.php';
+
+confirm_login();
 
 //Retrive All Categories List on Form
 $sql = "SELECT `id`, `name` FROM categories WHERE `status` = 1;";
@@ -17,16 +17,19 @@ if ($result->num_rows > 0) {
     echo $conn->error;
     array_push($categorylist, NULL);
 }
-//$conn->close();
 //Insert Post call
 if (isset($_POST["postentrybutton"])) {
+
     date_default_timezone_set("Asia/Dhaka");
     $currentdatetime = strftime("%d-%m-%Y %H:%M:%S", time());
     $posttitle = mysqli_real_escape_string($conn, $_POST["posttitle"]);
     $categorynumber = mysqli_real_escape_string($conn, $_POST["categoryno"]);
-    $authorname = "Hafijul";
-    $postdescription = $_POST["postdescription"];
+    $authorname = $_SESSION['fullname'];
+    
+    $postdescription = divremover($_POST["postdescription"]);
+    
     $validationresult = titlevaliadtor($posttitle);
+    
     if ($validationresult != NULL) {
         $_SESSION["error"] = $validationresult;
         $errortype = 'error';
@@ -118,7 +121,7 @@ if (isset($_POST["postentrybutton"])) {
                 </div>
                 <div class="collapse navbar-collapse" id="collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
@@ -141,12 +144,15 @@ if (isset($_POST["postentrybutton"])) {
                         <div class="row profile">
                             <div class="col-lg-12">
                                 <center>
-                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/admin.jpg" />
+                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" />
                                 </center>
                             </div>
                             <div class="col-lg-12">
                                 <div class="profile-name">
-                                    <p>Mohammad Hafijul Islam</p>
+                                    <p class="text-center"><?php echo $_SESSION['fullname']; ?>
+                                        <br>
+                                        <span style="color: limegreen; font-size: 1em; font-weight: normal;"><?php  echo "@" . $_SESSION['username']; ?></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>

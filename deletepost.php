@@ -1,6 +1,8 @@
 <?php
-require_once 'utilities/session.php';
+require_once 'utilities/RequiredUtilities.php';
 require_once 'utilities/dbconnection.php';
+
+confirm_login();
 
 //Retrive Post to edit
 if(isset($_GET["id"])) {
@@ -81,7 +83,7 @@ if (isset($_POST['postdeletebutton'])) {
                 </div>
                 <div class="collapse navbar-collapse" id="collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
@@ -104,12 +106,15 @@ if (isset($_POST['postdeletebutton'])) {
                         <div class="row profile">
                             <div class="col-lg-12">
                                 <center>
-                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/admin.jpg" />
+                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" />
                                 </center>
                             </div>
                             <div class="col-lg-12">
                                 <div class="profile-name">
-                                    <p>Mohammad Hafijul Islam</p>
+                                    <p class="text-center"><?php echo $_SESSION['fullname']; ?>
+                                        <br>
+                                        <span style="color: limegreen; font-size: 1em; font-weight: normal;"><?php  echo "@" . $_SESSION['username']; ?></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>

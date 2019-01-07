@@ -1,7 +1,5 @@
 <?php
-require_once 'utilities/session.php';
-require_once 'utilities/message.php';
-require_once 'utilities/validator.php';
+require_once 'utilities/RequiredUtilities.php';
 require_once 'utilities/dbconnection.php';
 
 $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description` FROM `userposts`, `categories` WHERE `userposts`.`status` = 1 AND `userposts`.`categoryno` = `categories`.`id` ORDER BY `userposts`.`id` DESC ;";
@@ -60,14 +58,14 @@ if ($result->num_rows > 0) {
                         <div class="form-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." >
                         </div>
-                        <button type="submit" class="btn btn-default" name="searchbutton"><span class="glyphicon glyphicon-search"></span></button>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                     </form>
                 </div> 
             </nav>
             <div style="height:10px; background-color:#27aae1; margin-top: -20px;" ></div>
-            <div class="container-fluid">
+            <div class="container">
                 <?php
-                echo message();
+                message();
                 ?>
                 <div class="blog-header">
                     <h1 class="text-capitalize"> Responsive CMS Blog</h1>
@@ -77,9 +75,10 @@ if ($result->num_rows > 0) {
                 </div>
                 <div class="row">
                     <div class="col-sm-8">
-                        <?php
-                        if (empty($postslist)) {
-                            ?>
+                        <div id="postlist">
+                            <?php
+                            if (empty($postslist)) {
+                                ?>
                             <div class="blogpost">
                                 <h2 class="blogpost-title">Empty List</h2>
                                 <p class="blogpost-description">There is no Post Entered... Please add new post <a href="#">Add ...</a></p>
@@ -95,11 +94,18 @@ if ($result->num_rows > 0) {
                                                 <?php echo htmlentities($post["title"]); ?>
                                             </h1>
                                             <p>
-                                                Category:
-                                                <label class="label label-info">
-                                                    <?php echo htmlentities($post["categoryname"]); ?>
-                                                </label>&nbsp;&nbsp;&nbsp;&nbsp;Published on : 
-                                                <?php echo date_format(date_create($post["createtime"]), "F d, Y"); ?>
+                                                <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                                                    <label class="label label-info">
+                                                        <?php echo htmlentities($post["categoryname"]); ?>
+                                                    </label>,&nbsp;&nbsp;
+                                                <span class="glyphicon glyphicon-user"></span>&nbsp;
+                                                    <label class="text-info">
+                                                        <?php echo $post["author"]; ?>
+                                                    </label>,&nbsp;&nbsp;
+                                                <span class="glyphicon glyphicon-time"></span>&nbsp; 
+                                                    <label>
+                                                        <?php echo date_format(date_create($post["createtime"]), "F d, Y"); ?>
+                                                    </label>
                                             </p>
                                         </div>
                                         <div class="blogpost-body">
@@ -108,8 +114,8 @@ if ($result->num_rows > 0) {
                                                 <div class="blogpost-description"><p>
                                                         <?php
                                                         $postdescription = str_replace("</p>", "", str_replace("<p>", "", $post["description"]));
-                                                        if (strlen($postdescription) > 300) {
-                                                            $postdescription = substr($postdescription, 0, 200) . " ... ";
+                                                        if (strlen($postdescription) > 400) {
+                                                            $postdescription = substr($postdescription, 0, 400) . " ... ";
 
                                                             echo $postdescription;
                                                         } else {
@@ -128,10 +134,22 @@ if ($result->num_rows > 0) {
                         }
                         ?>
                     </div>
-                    <!--
-                    <div class="col-sm-4" style="background-color: red;">
-                        <div class="blogpost thumbnail">
-                            <h2 class="blogpost-title">Test</h2>
+                    </div>
+                    <center>
+                    <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center pagination-lg">
+                                    <li id="previous-page">
+                                        <a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>Previous</span></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                    </center>
+                </div>
+                <div class="col-sm-offset-1 col-sm-3">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2 class="blogpost-title text-center">About Me</h2>
+                            <img class="img-responsive img-circle img-icon" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" alt="<?php echo $_SESSION['fullname']; ?>"/>
                             <p class="blogpost-description">
                                 Lorem Ipsum is simply dummy text of the printing and typesetting
                                 industry. Lorem Ipsum has been the industry's standard dummy text
@@ -145,9 +163,25 @@ if ($result->num_rows > 0) {
                             </p>
                         </div>
                     </div>
-                    -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-primary">
+                                <div class="panel panel-heading">
+                                    <h2 class="panel-title">Categories</h2>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-bordered table-responsive">
+                                        <tr>
+                                            
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
             <!-- Footer -->
             <div id="footer">
                 <hr/>
@@ -158,7 +192,6 @@ if ($result->num_rows > 0) {
                 <hr/>
             </div>
             <!-- / Footer -->
-        </div>
         <script src="resources/js/publicscript.js" ></script>
         <script src="resources/bootstrap/js/bootstrap.min.js" ></script>
     </body>

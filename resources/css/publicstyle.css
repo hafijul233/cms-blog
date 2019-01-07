@@ -52,8 +52,11 @@ body{
 }
 
 .blogpost-header {
-    font-family: Bitter, Georgia, "Times New Roman", serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;;
     color: #005E90;
+    font-size: 1.1em;
+    font-weight: normal;
+    
 }
 
 .blogpost-header:hover {
@@ -61,7 +64,7 @@ body{
 }
 
 .blogpost-header p{
-    font-size: 1.1em;
+    font-size: 1em;
     color: #878a8f;
 }
 .blogpost-title {
@@ -88,7 +91,7 @@ body{
 
 .blogpost-description {
     color: #4f4848;
-    font-weight: bold;
+    font-weight: normal;
     margin-top: 10px;
     cursor: auto;
 }
@@ -147,4 +150,11 @@ body{
     font-weight: bold;
     font-size: 1.2em;
     font-family: "Times New Roman";
+}
+
+.img-icon {
+    margin: 0px auto;
+    display: block;
+    border: 3px solid #ffffff;
+    max-width: 150px;
 }

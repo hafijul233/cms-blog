@@ -39,9 +39,12 @@ body{
 
 .profile-pic{
     position: relative;
-    width: 70%;
+    width: 100px;
+    height: 100px;
     align-items: center;
     border: 3px solid #ffffff;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .profile-name {

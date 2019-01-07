@@ -1,11 +1,11 @@
 <?php
 
-    require_once 'utilities/session.php';
-    require_once 'utilities/message.php';
-    require_once 'utilities/validator.php';
+    require_once 'utilities/RequiredUtilities.php';
     require_once 'utilities/dbconnection.php';
+
+confirm_login();
     
-    $sql = "SELECT `userposts`.`title` AS `posttitle`, `comments`.`id`, `comments`.`datetime` AS `commenttime`, `comments`.`name`, `comments`, `comments`.`status`" .
+    $sql = "SELECT `userposts`.`title` AS `posttitle`, `comments`.`id`, `comments`.`datetime` AS `commenttime`, `approvedby`, `comments`.`name`, `comments`, `comments`.`status`" .
            "FROM `comments`, `userposts`" .
            "WHERE `comments`.`postid` = `userposts`.`id`" .
            "ORDER BY `comments`.`id` DESC;";
@@ -25,21 +25,24 @@
     if(isset($_GET['commentid'])) {
         $commentid = $_GET['commentid'];
         $action = $_GET['action'];
+        $adminname = $_SESSION['username'];
         
-        $sql = "UPDATE `comments` SET `status` = ";
+        $sql = "UPDATE `comments` SET `approvedby` = '$adminname',`status` = ";
         
         if($action == "OK") {
             $sql.= "1 WHERE `id` = $commentid;";
+            $msg = "Comment Approved";
         }
         else if($action == "NOTOK") {
          $sql.= "0 WHERE `id` = $commentid;";   
+            $msg = "Comment Unapproved";
         }
         else if($action == "DELETE") {
             $sql = "DELETE FROM `comments` WHERE `id` = $commentid;";
-            
+            $msg = "Comment Deleted";
         }
         if ($conn->query($sql) === TRUE) {
-            $_SESSION["error"] = "Comment Approved";
+            $_SESSION["error"] = $msg;
             $errortype = 'success';
             header("Location: comments.php?type=" . $errortype);
         } else {
@@ -56,7 +59,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
-        <title>Manage Comments</title>
+        <title>Comments</title>
         <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -103,12 +106,15 @@
                         <div class="row profile">
                             <div class="col-lg-12">
                                 <center>
-                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/admin.jpg" />
+                                    <img class="img-circle profile-pic" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" />
                                 </center>
                             </div>
                             <div class="col-lg-12">
                                 <div class="profile-name">
-                                    <p>Mohammad Hafijul Islam</p>
+                                    <p class="text-center"><?php echo $_SESSION['fullname']; ?>
+                                        <br>
+                                        <span style="color: limegreen; font-size: 1em; font-weight: normal;"><?php  echo "@" . $_SESSION['username']; ?></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -159,6 +165,7 @@
                                             <th>Name</th>
                                             <th>Comments</th>
                                             <th>Date & Time</th>
+                                            <th><center>Approved By</center></th>
                                             <th>Status</th>
                                             <th><center>Approve</center></th>
                                             <th><center>Action</center></th>
@@ -189,6 +196,11 @@
                                                     echo $comment['comments'];
                                                 echo "</td>";
                                                 echo "<td>" . str_replace("-", "/", $comment['commenttime']) . "</td>";
+                                                ?>
+                                                <td>
+                                                    <?php echo $comment['approvedby'];?>
+                                                </td>
+                                                <?php
                                                 if($comment['status'] == 1){
                                                     echo "<td><label class=\"btn btn-warning\">ON</label></td>";
                                                 }
