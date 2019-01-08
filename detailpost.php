@@ -144,7 +144,7 @@ if (isset($_GET['category'])) {
                 <div class="collapse navbar-collapse" id="collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                        <li class="active"><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
+                        <li class="active"><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
@@ -217,6 +217,50 @@ if (isset($_GET['category'])) {
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <span class="feild-info">Comments</span><br/><br/>
+                                    <?php
+                                    if (empty($commentslist) || empty($commentslist[0])) {
+                                        
+                                    } else {
+                                        foreach ($commentslist as $comment) {
+                                            ?>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="comment-block">
+                                                        <img style="margin: 10px ; width: 60px; height: 60px; border-radius: 50%;" class="pull-left" src="resources/img/user.png" />
+                                                        <p style="margin-left: 90px;" class="comment-info"><?php echo $comment['name']; ?>
+                                                            <span style="margin: -2px 10px 10px 90px;"class="description pull-right"><?php echo date_format(date_create($comment["datetime"]), "F d, Y h:i A"); ?></span>
+                                                        </p>
+                                                        <p style="margin-left: 90px;" class="comment"><?php echo nl2br($comment['comments']); ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    <p class="lead feild-info" style="font-size: 1.5em; color: green;">Share your thought on this post</p>
+                                    <form action="detailpost.php?id=<?php echo $post['id']; ?>" method="post">
+                                        <div class="form-group">
+                                            <label for="name"><span class="feild-info">Name:</span></label>
+                                            <input type="text" class="form-control" name="name" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email"><span class="feild-info">Email:</span></label>
+                                            <input type="email" class="form-control" name="email" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comment"><span class="feild-info">Comment:</span></label>
+                                            <textarea class="form-control"  placeholder="Please Write something ....." name="comment" style="width: 100%; height: 150px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                        </div>
+                                        <div class="col-lg-offset-4 col-lg-4">
+                                            <button type="submit" name="commentbutton" class="btn btn-primary btn-lg">Comment</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <?php
                         }
                         ?>
@@ -257,7 +301,7 @@ if (isset($_GET['category'])) {
                                                 foreach ($categorylist as $category) {
                                                     $counter++;
                                                     ?>
-                                                    <li class="list-category-item"><a href="blog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name']; ?></a></li>
+                                                    <li class="list-category-item"><a href="liveblog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name']; ?></a></li>
                                                     <?php
                                                     if ($counter > 10)
                                                         break;
@@ -324,50 +368,6 @@ if (isset($_GET['category'])) {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8">
-                        <span class="feild-info">Comments</span><br/><br/>
-                        <?php
-                        if (empty($commentslist) || empty($commentslist[0])) {
-                            
-                        } else {
-                            foreach ($commentslist as $comment) {
-                                ?>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="comment-block">
-                                            <img style="margin: 10px ; width: 60px; height: 60px; border-radius: 50%;" class="pull-left" src="resources/img/user.png" />
-                                            <p style="margin-left: 90px;" class="comment-info"><?php echo $comment['name']; ?>
-                                                <span style="margin: -2px 10px 10px 90px;"class="description pull-right"><?php echo date_format(date_create($comment["datetime"]), "F d, Y h:i A"); ?></span>
-                                            </p>
-                                            <p style="margin-left: 90px;" class="comment"><?php echo nl2br($comment['comments']); ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php
-                            }
-                        }
-                        ?>
-                        <p class="lead feild-info" style="font-size: 1.5em; color: green;">Share your thought on this post</p>
-                        <form action="detailpost.php?id=<?php echo $post['id']; ?>" method="post">
-                            <div class="form-group">
-                                <label for="name"><span class="feild-info">Name:</span></label>
-                                <input type="text" class="form-control" name="name" />
-                            </div>
-                            <div class="form-group">
-                                <label for="email"><span class="feild-info">Email:</span></label>
-                                <input type="email" class="form-control" name="email" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="comment"><span class="feild-info">Comment:</span></label>
-                                <textarea class="form-control"  placeholder="Please Write something ....." name="comment" style="width: 100%; height: 150px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                            </div>
-                            <div class="col-lg-offset-4 col-lg-4">
-                                <button type="submit" name="commentbutton" class="btn btn-primary btn-lg">Comment</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <div style="height: 20px; width: auto;"></div>

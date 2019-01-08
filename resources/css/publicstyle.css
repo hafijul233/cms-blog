@@ -122,12 +122,13 @@ body{
     margin-top:-2px;
 }
 #footer {
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 0px 0px;
     border-top: 1px solid #000000;
     padding: 1em;
     background-color: #211f22;
     color: #eeeeee;
     text-align: center;
+    border-bottom: 10px solid #3877ef;
 }
 #footer p {
 
@@ -179,4 +180,10 @@ body{
 .list-category-item a:hover{
     color: #23527c;
     text-decoration: underline;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }

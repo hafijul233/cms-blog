@@ -141,7 +141,7 @@ if (isset($_POST["posteditbutton"])) {
                 <div class="collapse navbar-collapse" id="collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                        <li><a href="blog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
+                        <li><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>

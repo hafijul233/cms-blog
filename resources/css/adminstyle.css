@@ -115,12 +115,13 @@ body{
 }
 
 #footer {
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 0px 0px;
     border-top: 1px solid #000000;
     padding: 1em;
     background-color: #211f22;
     color: #eeeeee;
     text-align: center;
+    border-bottom: 10px solid #27aae1;
 }
 #footer p {
 
@@ -138,3 +139,8 @@ body{
     font-weight: bold;
 }
 
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
