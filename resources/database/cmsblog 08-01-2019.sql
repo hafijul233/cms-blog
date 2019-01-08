@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 07, 2019 at 10:00 PM
--- Server version: 10.1.32-MariaDB
--- PHP Version: 7.2.5
+-- Host: localhost
+-- Generation Time: Jan 08, 2019 at 05:52 AM
+-- Server version: 5.7.24
+-- PHP Version: 7.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -119,7 +119,8 @@ INSERT INTO `comments` (`id`, `postid`, `name`, `emailaddress`, `comments`, `dat
 (22, 40, 'Hira Ahemmed', 'rahim78@gmail.com', 'ki korta so', '07-01-2019 17:40:11', 'hafijul233', 0, '2019-01-07 17:40:11', '2019-01-07 17:40:11'),
 (23, 4, 'Andriod Kikaidar', 'hafijul233@gamil.com', 'ki khobro vlo lage ', '07-01-2019 18:55:21', 'hafijul233', 1, '2019-01-07 18:55:21', '2019-01-07 18:55:46'),
 (24, 42, 'hamida', 'hamida123@gmail.com', 'Cool Work Keep it up!', '08-01-2019 01:24:10', 'sumiakter123', 0, '2019-01-08 01:24:10', '2019-01-08 02:38:50'),
-(25, 36, 'Zilani', 'sokina785@ist.com', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ', '08-01-2019 02:35:53', 'sumiakter123', 1, '2019-01-08 02:35:53', '2019-01-08 02:38:32');
+(25, 36, 'Zilani', 'sokina785@ist.com', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ', '08-01-2019 02:35:53', 'sumiakter123', 1, '2019-01-08 02:35:53', '2019-01-08 02:38:32'),
+(26, 22, 'Hafijul Islam', 'hafijul233@gmail.com', 'Thank You.I have an Twitter account', '08-01-2019 19:46:21', 'sumiakter123', 1, '2019-01-08 19:46:21', '2019-01-08 19:46:40');
 
 -- --------------------------------------------------------
 
@@ -180,7 +181,9 @@ INSERT INTO `userposts` (`id`, `author`, `categoryno`, `datetime`, `title`, `ima
 (40, 'sajid', 30, '01-05-2017 00:18:06', 'The Season is Upon Us ', '1256341a7dd6adbdb6b20ebc47fd9527.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit , sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul lamco laboris nisi ut aliquip ex ea commodo consequat. Duis a ute irure dolor in reprehenderit in voluptate velit esse cill um dolore eu fugiat nulla pariatur. Excepteur sint occaecat c upidatat non proi dent, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2019-01-06 02:14:56', '2019-01-06 02:14:56', 1),
 (41, 'Elizabeth Doe', 5, '29-06-2017 01:54:42', 'New Module in Teaching', '1256341a7dd6adbdb6b20ebc47fd9527.jpg', '                         Machine Lorem ipsum dolor sit amet, consectetur adipiscing elit , sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul lamco laboris nisi ut aliquip ex ea commodo consequat. Duis a ute irure dolor in reprehenderit in voluptate velit esse cill um dolore eu fugiat nulla pariatur. Excepteur sint occaecat c upidatat non proi dent, sunt in culpa qui officia deserunt mollit anim id est laborum.             ', '2019-01-06 02:14:56', '2019-01-06 02:14:56', 1),
 (42, 'jazeb', 30, '28-05-2017 00:42:17', 'Cool Laptop in History', '1256341a7dd6adbdb6b20ebc47fd9527.jpg', '                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit , sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul lamco laboris nisi ut aliquip ex ea commodo consequat. Duis a ute irure dolor in reprehenderit in voluptate velit esse cill um dolore eu fugiat nulla pariatur. Excepteur sint occaecat c upidatat non proi dent, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n<div style=\"height: 10px; background: #27AAE1;\"></div> \r\n<h2 id=\"heading\">The Steps you should Take</h2>\r\n       <ul>\r\n                <li> keep it Small</li>\r\n             <li>Clean Regulary </li>\r\n            <li>Keep the AC On</li>\r\n             <li>Make it now</li>\r\n                <li>Do it with it</li>\r\n      </ul>\r\n<div style=\"height: 10px; background: #27AAE1;\"></div>\r\nLorem ipsum dolor sit amet, consectetur adipiscing elit , sed do eiusmod tempor incididunt ut labore et dolore.\r\n magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ul lamco laboris nisi ut aliquip ex ea commodo consequat. Duis a ute irure dolor in reprehenderit in voluptate velit esse cill um dolore eu fugiat nulla pariatur. Excepteur sint occaecat c upidatat non proi dent, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n<div style=\"height: 10px; background: #27AAE1;\"></div>\r\n<h2 id=\"heading\">How to Place charger</h2>\r\n<img class=\"img-responsive \" src=\"images/charger.png\" />\r\n<div style=\"height: 10px; background: #27AAE1;\"></div>\r\n<h3 id=\"heading\">The Laptop Recomendation</h3>\r\n<img style=\"margin:0 auto;\" class=\"img-responsive \" src=\"images/Laptop.png\" />\r\n<div style=\"height: 10px; background: #27AAE1;\"></div>\r\n<blockquote>ercitation ul lamco laboris nisi ut aliquip ex ea commodo consequat. Duis a ute irure dolor in reprehenderit in voluptate velit esse cill um dolore eu fugiat nulla pariatur. Excepteur sint occaecat c upidatat no</blockquote>                   ', '2019-01-06 02:14:56', '2019-01-06 02:14:56', 1),
-(46, 'sume khatun', 31, '08-01-2019 02:08:01', 'Hacking', '45d5e56a3280c6c13a2e4c0ea57598e9.jpg', '<p>\r\n</p>\r\n                        <h2>Techopedia explains Hacking</h2>\r\n                        \r\n                            Hackers employ a variety of techniques for hacking, including:<ul><li>Vulnerability scanner: checks computers on networks for known weaknesses</li><li>Password cracking: the process of recovering passwords from data stored or transmitted by computer systems</li><li>Packet sniffer: applications that capture data packets in order to view data and passwords in transit over networks</li><li>Spoofing attack: involves websites which falsify data by mimicking legitimate sites, and they are therefore treated as trusted sites by users or other programs</li><li>Root kit: represents a set of programs which work to subvert control of an operating system from legitimate operators</li><li>Trojan horse: serves as a back door in a computer system to allow an intruder to gain access to the system later</li><li>Viruses: self-replicating programs that spread by inserting copies of themselves into other executable code files or documents</li><li>Key loggers: tools designed to record every keystroke on the affected machine for later retrieval</li></ul>Certain corporations employ hackers as part of their support staff. These legitimate hackers use their skills to find flaws in the company security system, thus preventing identity theft and other computer-related crimes.\r\n                        \r\n                    \r\n\r\n<p></p>', '2019-01-08 02:08:01', '2019-01-08 02:08:01', 1);
+(46, 'sume khatun', 31, '08-01-2019 02:08:01', 'Hacking', '45d5e56a3280c6c13a2e4c0ea57598e9.jpg', '<p>\r\n</p>\r\n                        <h2>Techopedia explains Hacking</h2>\r\n                        \r\n                            Hackers employ a variety of techniques for hacking, including:<ul><li>Vulnerability scanner: checks computers on networks for known weaknesses</li><li>Password cracking: the process of recovering passwords from data stored or transmitted by computer systems</li><li>Packet sniffer: applications that capture data packets in order to view data and passwords in transit over networks</li><li>Spoofing attack: involves websites which falsify data by mimicking legitimate sites, and they are therefore treated as trusted sites by users or other programs</li><li>Root kit: represents a set of programs which work to subvert control of an operating system from legitimate operators</li><li>Trojan horse: serves as a back door in a computer system to allow an intruder to gain access to the system later</li><li>Viruses: self-replicating programs that spread by inserting copies of themselves into other executable code files or documents</li><li>Key loggers: tools designed to record every keystroke on the affected machine for later retrieval</li></ul>Certain corporations employ hackers as part of their support staff. These legitimate hackers use their skills to find flaws in the company security system, thus preventing identity theft and other computer-related crimes.\r\n                        \r\n                    \r\n\r\n<p></p>', '2019-01-08 02:08:01', '2019-01-08 02:08:01', 1),
+(47, 'Hafijul Islam', 31, '08-01-2019 19:39:49', 'Facebook Batpar', 'd01cddeb1fb89fdfbbed90b5e2455948.jpeg', '<p>Facebook is stealing our Data<br></p>', '2019-01-08 19:39:54', '2019-01-08 19:39:54', 1),
+(48, 'sume khatun', 28, '08-01-2019 19:42:38', 'Twitter', '43296e10fa850c754315be768687dfa7.png', '<p><b>Twitter</b> is an American online news and social \r\nnetworking service on which users post and interact with messages known \r\nas \"tweets\". Tweets were originally restricted to 140 characters, but on\r\n November 7, 2017, this limit was doubled for all languages except \r\nChinese, Japanese, and Korean.<br></p>', '2019-01-08 19:42:38', '2019-01-08 19:42:38', 1);
 
 -- --------------------------------------------------------
 
@@ -253,13 +256,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `userposts`
 --
 ALTER TABLE `userposts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `userprofiles`

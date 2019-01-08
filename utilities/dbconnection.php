@@ -2,7 +2,7 @@
 //Database Connection Access Port
 $servername = "localhost";
 $username = "root";
-$password = "root123";
+$password = "";
 $dbname = "cmsblog";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
