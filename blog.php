@@ -206,17 +206,24 @@ if (isset($_GET['category'])) {
                         <div class="col-lg-12">
                             <div class="panel panel-primary">
                                 <div class="panel panel-heading">
-                                    <h2 class="panel-title">Categories</h2>
+                                    <h2 class="panel-title text-center">
+                                        <span class="glyphicon glyphicon-tags"></span>
+                                        Categories
+                                    </h2>
                                 </div>
                                 <div class="panel-body">
                                     <?php
                                     if(!empty($categorylist)) { ?>
-                                       <ul> 
+                                    <ul class="list-category"> 
                                     <?php
+                                        $counter = 0;
                                            foreach ($categorylist as $category) {
+                                               $counter++;
                                         ?>
-                                           <li class="list-group-item"><a href="blog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name'];?></a></li>
-                                        <?php } ?>
+                                           <li class="list-category-item"><a href="blog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name'];?></a></li>
+                                        <?php 
+                                        if($counter > 10) break; 
+                                           } ?>
                                     </ul>
                                     <?php } ?>
                                 </div>
@@ -228,14 +235,36 @@ if (isset($_GET['category'])) {
                         <div class="col-lg-12">
                             <div class="panel panel-success">
                                 <div class="panel panel-heading">
-                                    <h2 class="panel-title">Recent Posts</h2>
+                                    <h2 class="panel-title text-center">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                        Recent Posts
+                                    </h2>
                                 </div>
                                 <div class="panel-body">
-                                    <table class="table table-bordered table-responsive">
-                                        <tr>
-                                            
-                                        </tr>
-                                    </table>
+                                    <?php
+                                    if(!empty($postslist)) { ?>
+                                    <ul class="list-category"> 
+                                    <?php
+                                        $counter = 0;
+                                           foreach ($postslist as $post) {
+                                               $counter++;
+                                        ?>
+                                        <li class="list-category-item">
+                                            <a href="detailpost.php?id=<?php echo $post['id']; ?>">
+                                            <?php 
+                                                if(strlen($post['title'])>25) {
+                                                    echo substr($post['title'],0,22) . "...";
+                                           }
+                                           else {
+                                               echo $post['title'];
+                                           }
+                                           ?></a>
+                                        </li>
+                                        <?php 
+                                        if($counter > 10) break;
+                                           } ?>
+                                    </ul>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>

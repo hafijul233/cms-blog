@@ -158,3 +158,25 @@ body{
     border: 3px solid #ffffff;
     max-width: 150px;
 }
+
+.list-category {
+    margin-top: -35px;
+    display: block;
+    padding: 5px;
+}
+
+.list-category-item {
+    color: #337ab7;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-bottom: 1px solid #000000;
+    text-decoration: none;
+}
+
+.list-category-item a:hover{
+    color: #23527c;
+    text-decoration: underline;
+}

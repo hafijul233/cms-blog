@@ -67,18 +67,4 @@ function divremover ($text) {
     $text = str_replace("</div>", "", $text);
     
     return $text;
-}
-//Database Connection Access Port
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "cmsblog";
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    $_SESSION['error'] = "Connection failed: " . $conn->connect_error;
-     $errortype = "error";
-     header("Location: login.php?type=" . $errortype);
-    die;
 } 

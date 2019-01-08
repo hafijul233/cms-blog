@@ -12,6 +12,7 @@ $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.
 
 $result = $conn->query($sql);
 $postslist = array();
+
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         //sednig comments array one post array Comments

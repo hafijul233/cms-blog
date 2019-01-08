@@ -1,10 +1,10 @@
 <?php
-    require_once 'utilities/RequiredUtilities.php';
-    require_once 'utilities/dbconnection.php';
+require_once 'utilities/RequiredUtilities.php';
+require_once 'utilities/dbconnection.php';
 
 confirm_login();
-    
-    if (isset($_GET["id"])) {
+
+if (isset($_GET["id"])) {
     $id = $_GET["id"];
 
     $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description` "
@@ -38,7 +38,7 @@ confirm_login();
 }
 
 //Insert Comments 
-    if (isset($_POST["commentbutton"])) {
+if (isset($_POST["commentbutton"])) {
     date_default_timezone_set("Asia/Dhaka");
     $currentdatetime = strftime("%d-%m-%Y %H:%M:%S", time());
     $name = mysqli_real_escape_string($conn, $_POST["name"]);
@@ -47,16 +47,15 @@ confirm_login();
     $admin = "Pending";
     $comment = divremover($_POST["comment"]);
     $postid = $_GET["id"];
-    
-    if (empty ($email) || empty ($name) || empty($comment)) {
-            $_SESSION["error"] = "All Feilds Are Required";
-            $errortype = 'error';
-            header("Location: detailpost.php?type=" . $errortype . "&id=" . $postid);
-    }
-    else {
-        
+
+    if (empty($email) || empty($name) || empty($comment)) {
+        $_SESSION["error"] = "All Feilds Are Required";
+        $errortype = 'error';
+        header("Location: detailpost.php?type=" . $errortype . "&id=" . $postid);
+    } else {
+
         $sql = "INSERT INTO `comments`(`postid`, `name`, `emailaddress`, `comments`, `datetime`, `approvedby`, `status`)" .
-               "VALUES ($postid, '$name', '$email', '$comment', '$currentdatetime', '$admin', 0);";
+                "VALUES ($postid, '$name', '$email', '$comment', '$currentdatetime', '$admin', 0);";
         if ($conn->query($sql) === TRUE) {
             $_SESSION["error"] = "Comment Received Successfully. Waiting for admin Approveal.";
             $errortype = 'success';
@@ -68,6 +67,48 @@ confirm_login();
             $errortype = 'failed';
             header("Location: detailpost.php?type=" . $errortype . "&id=" . $postid);
         }
+    }
+}
+
+//All category
+$sql = "SELECT `name` "
+        . "FROM `categories` "
+        . "WHERE `categories`.`status` = 1 "
+        . " ORDER BY `created` DESC ;";
+
+$result = $conn->query($sql);
+$categorylist = array();
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        array_push($categorylist, $row);
+    }
+} else {
+
+    array_push($categorylist, NULL);
+
+    echo $conn->error();
+}
+
+
+if (isset($_GET['category'])) {
+    $postslist = NULL;
+    $sql = "SELECT `userposts`.`id`,`author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`, `title`, `image`, `post` AS `description` "
+            . "FROM `userposts`, `categories` "
+            . "WHERE `userposts`.`status` = 1 "
+            . "AND `userposts`.`categoryno` = `categories`.`id` "
+            . "AND `categories`.`name` = '$categoryname'"
+            . "ORDER BY `userposts`.`created` DESC ;";
+
+    $result = $conn->query($sql);
+    $postslist = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($postslist, $row);
+        }
+    } else {
+        array_push($postslist, NULL);
+        echo $conn->error();
     }
 }
 ?>
@@ -118,7 +159,7 @@ confirm_login();
                 </div> 
             </nav>
             <div style="height:10px; background-color:#27aae1; margin-top: -20px;" ></div>
-            <div class="container-fluid">
+            <div class="container">
                 <br/>
                 <?php
                 echo message();
@@ -147,29 +188,31 @@ confirm_login();
                                         <?php echo htmlentities($post["title"]); ?>
                                     </h1>
                                     <p>
-                                                <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
-                                                    <label class="label label-info">
-                                                        <?php echo htmlentities($post["categoryname"]); ?>
-                                                    </label>,&nbsp;&nbsp;
-                                                <span class="glyphicon glyphicon-user"></span>&nbsp;
-                                                    <label class="text-info">
-                                                        <?php echo $post["author"]; ?>
-                                                    </label>,&nbsp;&nbsp;
-                                                <span class="glyphicon glyphicon-time"></span>&nbsp; 
-                                                    <label>
-                                                        <?php echo date_format(date_create($post["createtime"]), "F d, Y"); ?>
-                                                    </label>
-                                            </p>
+                                        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                                        <label class="label label-info">
+                                            <?php
+                                            echo htmlentities($post["categoryname"]);
+                                            $refcatgoryname = $post['categoryname'];
+                                            ?>
+                                        </label>,&nbsp;&nbsp;
+                                        <span class="glyphicon glyphicon-user"></span>&nbsp;
+                                        <label class="text-info">
+                                            <?php echo $post["author"]; ?>
+                                        </label>,&nbsp;&nbsp;
+                                        <span class="glyphicon glyphicon-time"></span>&nbsp; 
+                                        <label>
+                                            <?php echo date_format(date_create($post["createtime"]), "F d, Y"); ?>
+                                        </label>
+                                    </p>
                                 </div>
                                 <div class="blogpost-body">
                                     <img class="img img-responsive" src="<?php echo "postcontent/image/" . $post["image"]; ?>"/>
                                     <div class="caption">
                                         <div class="blogpost-description">
-                                                <?php
-                                                //$postdescription = str_replace("</p>", "", str_replace("<p>", "", $post["description"]));
-                                                echo nl2br($post['description']);
-                                                ?>
-                                            
+                                            <?php
+                                            echo nl2br($post['description']);
+                                            ?>
+
                                         </div>
                                     </div>
                                 </div>
@@ -178,20 +221,108 @@ confirm_login();
                         }
                         ?>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="post">
-                            <h2 class="post-title">Test</h2>
-                            <p class="post-description">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting
-                                industry. Lorem Ipsum has been the industry's standard dummy text
-                                ever since the 1500s, when an unknown printer took a galley of type
-                                and scrambled it to make a type specimen book. It has survived not
-                                only five centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged. It was popularised in the 1960s 
-                                with the release of Letraset sheets containing Lorem Ipsum passages,
-                                and more recently with desktop publishing software like Aldus 
-                                PageMaker including versions of Lorem Ipsum.<a href="#">Read More ...</a>
-                            </p>
+                    <div class="col-sm-offset-1 col-sm-3">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h2 class="blogpost-title text-center">About Me</h2>
+                                <img class="img-responsive img-circle img-icon" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" alt="<?php echo $_SESSION['fullname']; ?>"/>
+                                <p class="blogpost-description">
+                                    Lorem Ipsum is simply dummy text of the printing and typesetting
+                                    industry. Lorem Ipsum has been the industry's standard dummy text
+                                    ever since the 1500s, when an unknown printer took a galley of type
+                                    and scrambled it to make a type specimen book. It has survived not
+                                    only five centuries, but also the leap into electronic typesetting,
+                                    remaining essentially unchanged. It was popularised in the 1960s 
+                                    with the release of Letraset sheets containing Lorem Ipsum passages,
+                                    and more recently with desktop publishing software like Aldus 
+                                    PageMaker including versions of Lorem Ipsum.<a href="#">Read More ...</a>
+                                </p>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel panel-heading">
+                                        <h2 class="panel-title text-center">
+                                            <span class="glyphicon glyphicon-tags"></span>
+                                            Categories
+                                        </h2>
+                                    </div>
+                                    <div class="panel-body">
+                                        <?php if (!empty($categorylist)) { ?>
+                                            <ul class="list-category"> 
+                                                <?php
+                                                $counter = 0;
+                                                foreach ($categorylist as $category) {
+                                                    $counter++;
+                                                    ?>
+                                                    <li class="list-category-item"><a href="blog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name']; ?></a></li>
+                                                    <?php
+                                                    if ($counter > 10)
+                                                        break;
+                                                }
+                                                ?>
+                                            </ul>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-success">
+                                    <div class="panel panel-heading">
+                                        <h2 class="panel-title text-center">
+                                            <span class="glyphicon glyphicon-list-alt"></span>
+                                            Related Posts
+                                        </h2>
+                                    </div>
+                                    <div class="panel-body">
+                                        <?php
+                                        //Preload Releted Post
+                                        $sql = "SELECT `userposts`.`id`, `title` FROM `userposts`,`categories` WHERE `userposts`.`status` = 1 AND `categories`.`name` = '$refcatgoryname' ANd `userposts`.`categoryno` = `categories`.`id` ORDER BY `userposts`.`id` DESC ;";
+                                        $result = $conn->query($sql);
+                                        $reletedpostslist = array();
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                array_push($reletedpostslist, $row);
+                                            }
+                                        } else {
+                                            array_push($reletedpostslist, NULL);
+
+                                            echo $conn->error();
+                                        }
+                                        if (!empty($reletedpostslist)) {
+                                            ?>
+                                            <ul class="list-category"> 
+                                                <?php
+                                                $counter = 0;
+                                                foreach ($reletedpostslist as $post) {
+                                                    $counter++;
+                                                    ?>
+                                                    <li class="list-category-item">
+                                                        <a href="detailpost.php?id=<?php echo $post['id']; ?>">
+                                                            <?php
+                                                            if (strlen($post['title']) > 25) {
+                                                                echo substr($post['title'], 0, 22) . "...";
+                                                            } else {
+                                                                echo $post['title'];
+                                                            }
+                                                            ?></a>
+                                                    </li>
+                                                    <?php
+                                                    if ($counter > 10)
+                                                        break;
+                                                }
+                                                ?>
+                                            </ul>
+                                        <?php }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,10 +330,9 @@ confirm_login();
                     <div class="col-lg-8">
                         <span class="feild-info">Comments</span><br/><br/>
                         <?php
-                        if(empty($commentslist) || empty($commentslist[0])) {
+                        if (empty($commentslist) || empty($commentslist[0])) {
                             
-                        }
-                        else {
+                        } else {
                             foreach ($commentslist as $comment) {
                                 ?>
                                 <div class="row">

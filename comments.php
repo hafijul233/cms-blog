@@ -5,9 +5,8 @@
 
 confirm_login();
     
-    $sql = "SELECT `userposts`.`title` AS `posttitle`, `comments`.`id`, `comments`.`datetime` AS `commenttime`, `approvedby`, `comments`.`name`, `comments`, `comments`.`status`" .
-           "FROM `comments`, `userposts`" .
-           "WHERE `comments`.`postid` = `userposts`.`id`" .
+    $sql = "SELECT `id`, `datetime` AS `commenttime`, `approvedby`, `name`, `comments`, `status`" .
+           "FROM `comments` ".
            "ORDER BY `comments`.`id` DESC;";
     $result = $conn->query($sql);
     $commentslist = array();
@@ -161,7 +160,6 @@ confirm_login();
                                     <thead>
                                         <tr>
                                             <th>ID No.</th>
-                                            <th><center>Post Title</center></th>
                                             <th>Name</th>
                                             <th>Comments</th>
                                             <th>Date & Time</th>
@@ -175,19 +173,13 @@ confirm_login();
                                         <?php
                                         if (empty($commentslist)) {
                                             echo "<tr>";
-                                            echo "<td colspan=\"9\"> There are no Comment Found</td>";
+                                            echo "<td colspan=\"8\"> There are no Comment Found</td>";
                                             echo "</tr>";
                                         } else {
                                             $counter = 1;
                                             foreach ($commentslist as $comment) {
                                               echo "<tr>";
                                                 echo "<td>" . $counter . "</td>";
-                                                echo "<td class=\"table-post-title\" title=\"" . $comment['posttitle'] ."\">"; 
-                                                if(strlen($comment['posttitle'])>15)
-                                                    echo substr($comment['posttitle'], 0, 15) . " ...</td>";
-                                                else
-                                                    echo $comment['posttitle'];
-                                                echo "</td>";
                                                 echo "<td>" . $comment['name'] . "</td>";
                                                 echo "<td title=\"" . $comment['comments'] ."\">"; 
                                                 if(strlen($comment['comments'])>20)
