@@ -79,11 +79,10 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
-        <title>Categories</title>
-        <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <title><?php if(empty($_SESSION['fullname']) == TRUE) {echo "CATEGORIES | User's BLog"; }else { echo $_SESSION['fullname'] . " | CATEGORIES"; } ?></title>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-        <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/dataTables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
         <script src="resources/jquery/jquery-3.2.1.js" ></script>
     </head>
@@ -106,12 +105,12 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
+                        <li><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
+                        <li><a href="services.php"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
+                        <li><a href="contactus.php"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
+                        <li><a href="features.php"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
                     </ul>
-                    <form action="search.php" method="post" class="navbar-form navbar-right">
+                    <form action="liveblog.php" method="get" class="navbar-form navbar-right">
                         <div class="form-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." >
                         </div>
@@ -160,7 +159,7 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
                             <li ><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admin's</a></li>
                             <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments</a></li>
                             <li ><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog</a></li>
-                            <li ><a href="login.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                            <li ><a href="utilities/logout.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                         </ul>
                     </div>
                     <!-- / Left slide bar -->
@@ -192,7 +191,7 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
                                         </span>
                                     </div>
                                     <div class="panel-body">
-                                        <table id="categoryTable" class="table table-striped table-hover display">
+                                      <table id="categoryTable" class="table table-striped table-hover display" style="width: 100%;">
                                             <thead>
                                                 <tr>
                                                     <th>ID No</th>
@@ -282,7 +281,8 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
             <!-- / Footer -->
         </div>
         <script src="resources/bootstrap/js/bootstrap.min.js" ></script>
-        <script src="resources/js/jquery.dataTables.min.js" ></script>
+        <script src="resources/dataTables/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="resources/dataTables/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="resources/js/adminscript.js" ></script>
         <script >
             $(document).ready(function () {

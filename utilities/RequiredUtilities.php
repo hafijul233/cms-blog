@@ -61,10 +61,9 @@ function searchvaliadtor($search) {
     return $search;
 }
 
-function divremover ($text) {
+function contentmodifier ($text) {
     
     $text = str_replace("<div>", "", $text);
     $text = str_replace("</div>", "", $text);
-    
     return $text;
 } 

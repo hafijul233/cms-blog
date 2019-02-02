@@ -177,11 +177,11 @@ if (isset($_GET['category'])) {
         <div class="collapse navbar-collapse" id="collapse">
           <ul class="nav navbar-nav">
             <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-            <li class="active"><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
+            <li><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
             <li><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
             <li><a href="services.php"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
             <li><a href="contactus.php"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
-            <li><a href="features.php"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
+            <li class="active"><a href="features.php"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
           </ul>
           <form action="liveblog.php" method="get" class="navbar-form navbar-right">
             <div class="form-group">
@@ -213,81 +213,53 @@ if (isset($_GET['category'])) {
         <!-- Main Content -->
         <div class="row">
           <div class="col-lg-8">
-              <?php
-              if (empty($postslist) == TRUE) { // if There is Not Post To Show
-                  ?>
-                <div class="blogpost thumbnail">
-                  <div class="blogpost-header">
-                    <h2 class="blogpost-title">Empty List</h2>
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title">About US</h3>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h2>What is Lorem Ipsum?</h2>
+                        <p>
+                          <strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry.
+                          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
+                          printer took a galley of type and scrambled it to make a type specimen book. It has survived 
+                          not only five centuries, but also the leap into electronic typesetting, remaining essentially
+                          unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
+                          Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
+                          versions of Lorem Ipsum.
+                        </p>
+                   </div>
                   </div>
-                  <div class="blogpost-body">
-                    <div class="blogpost-description">
-                      There is no Post to Show... Please add new post 
-                      <a href="addnewpost.php" class="lead">Add One ...</a>
-                    </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                     <h2>Why do we use it?</h2>
+                     <p>
+                       It is a long established fact that a reader will be distracted by the readable content of a page when looking
+                       at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, 
+                       as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing 
+                       packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will
+                       uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident,
+                       sometimes on purpose (injected humour and the like).
+                     </p>
                   </div>
                 </div>
-                <?php
-            } else { // There a post that can be display
-                ?>
-                <?php
-                foreach ($postslist as $post) {
-                    if (!empty($post)) {
-                        ?>
-                        <div class="blogpost thumbnail">
-                          <div class="blogpost-header">
-                            <h1 class="blogpost-title">
-                                <?php echo htmlentities($post["title"]); ?>
-                            </h1>
-                            <p class="text-justify">
-                              <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
-                              <label class="label label-info">
-                                  <?php echo htmlentities($post["categoryname"]); ?>
-                              </label>,&nbsp;&nbsp;
-                              <span class="glyphicon glyphicon-user"></span>&nbsp;
-                              <label class="text-info">
-                                  <?php echo $post["author"]; ?>
-                              </label>,&nbsp;&nbsp;
-                              <span class="glyphicon glyphicon-time"></span>&nbsp; 
-                              <label  class="text-info">
-                                  <?php echo date_format(date_create($post["createtime"]), "F d, Y"); ?>
-                              </label>
-                            </p>
-                          </div><!-- /. Blog header -->
-                          <div class="blogpost-body">
-                            <div class="blogpost-description">
-                              <img class="img img-responsive" src="<?php echo "postcontent/image/" . $post["image"]; ?>" alt="<?php echo $post["image"]; ?>"/>
-                              <!-- /. Post title Image -->
-                              <div class="caption"> <!-- caption -->
-                                <div class="blogpost-description">
-                                    <?php
-                                    $postdescription = str_replace("</p>", "", str_replace("<p>", "", $post["description"]));
-                                    if (strlen($postdescription) > 300)
-                                        echo substr($postdescription, 0, 300) . " ...";
-                                    else
-                                        echo $postdescription;
-                                    ?>
-                                  <p><a href="detailpost.php?id=<?php echo$post['id']; ?>" class="btn btn-info pull-right">Read More ...</a></p>
-                                </div>
-                              </div><!-- /.caption -->
-                            </div>
-                          </div><!-- /. Blog-post Body -->
-                        </div><!-- /. Blog-post Thumbnail -->
-                        <?php
-                    }//if $post is not empty
-                }// foreach loop closing 
-                ?>
-                <center>
-                  <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center pagination-lg">
-                      <li id="previous-page">
-                        <a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>Previous</span></a>
-                      </li>
-                    </ul>
-                  </nav>
-                </center>
-            <?php } ?>
-          </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                   <h2>Where does it come from?</h2>
+                   <p>
+                     It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+                     The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here,
+                     content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum
+                     as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions
+                     have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                   </p>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
           <div class="col-lg-offset-1 col-lg-3">
             <div class="row">
               <div class="col-lg-12">

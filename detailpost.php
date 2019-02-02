@@ -118,7 +118,7 @@ if (isset($_GET['category'])) {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <title>User Blog's Page</title>
+        <title><?php if(empty($post['title']) == TRUE) {echo "User's BLog"; }else { echo $post['title'] . " | DETAIL"; } ?></title>
         <link rel="icon" href="resources/img/icon.png" type="image/png" />
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
@@ -145,12 +145,12 @@ if (isset($_GET['category'])) {
                     <ul class="nav navbar-nav">
                         <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li class="active"><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
+                        <li><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
+                        <li><a href="services.php"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
+                        <li><a href="contactus.php"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
+                        <li><a href="features.php"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
                     </ul>
-                    <form action="search.php" method="post" class="navbar-form navbar-right">
+                    <form action="liveblog.php" method="get" class="navbar-form navbar-right">
                         <div class="form-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." >
                         </div>

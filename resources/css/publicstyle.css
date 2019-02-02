@@ -17,6 +17,10 @@ body{
   overflow-y: auto;
 }
 
+.header{
+	background-color: lime;
+}
+
 .navbar-nav li {
     font-weight: bold;
     font-size: 1.1em;
@@ -29,6 +33,9 @@ body{
     font-weight: bold;
     font-size: 1.2em;
     border-radius: 5px;
+}
+.navbar-inverse .navbar-nav .active a {
+	background-color: red;
 }
 
 #collapse .active li {
