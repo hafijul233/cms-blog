@@ -84,7 +84,7 @@ if (isset($_POST["loginbutton"])) {
                         <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
                     </ul>
-                    <form action="search.php" method="post" class="navbar-form navbar-right">
+                    <form action="liveblog.php" method="get" class="navbar-form navbar-right">
                         <div class="form-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." >
                         </div>

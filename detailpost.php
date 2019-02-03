@@ -150,7 +150,7 @@ if (isset($_GET['category'])) {
                         <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
                     </ul>
-                    <form action="search.php" method="post" class="navbar-form navbar-right">
+                    <form action="liveblog.php" method="get" class="navbar-form navbar-right">
                         <div class="form-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." >
                         </div>
@@ -301,7 +301,7 @@ if (isset($_GET['category'])) {
                                                 foreach ($categorylist as $category) {
                                                     $counter++;
                                                     ?>
-                                                    <li class="list-category-item"><a href="liveblog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name']; ?></a></li>
+                                                    <li class="list-category-item"><a href="liveblog.php?page=1&category=<?php echo $category['name']; ?>"><?php echo $category['name']; ?></a></li>
                                                     <?php
                                                     if ($counter > 10)
                                                         break;

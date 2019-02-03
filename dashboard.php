@@ -72,7 +72,7 @@ if ($result->num_rows > 0) {
                         <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
                     </ul>
-                    <form action="search.php" method="post" class="navbar-form navbar-right">
+                    <form action="liveblog.php" method="get" class="navbar-form navbar-right">
                         <div class="form-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." >
                         </div>
@@ -120,13 +120,9 @@ if ($result->num_rows > 0) {
                             <li ><a href="category.php"><span class="glyphicon glyphicon-tags"></span> Categories</a></li>
                             <li ><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admin's</a></li>
                             <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments
-                                    <?php if ($comments != NULL) {
-                                        ?>
-                                        <label class="label label-warning pull-right">
-                                            <?php echo $comments;
-                                        }
-                                        ?>
-                                    </label>
+                                    <?php if ($comments != NULL && $comments != 0) 
+                                        echo "<label class=\"label label-warning pull-right\">" . $comments . "</label>";
+                                    ?>
                                 </a>
                             </li>
                             <li ><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog</a></li>

@@ -13,3 +13,17 @@ if ($conn->connect_error) {
      header("Location: login.php?type=" . $errortype);
     die;
 }
+
+function selectarray($conn, $sql) {
+    $arr = [];
+    
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($arr, $row);
+        }
+    } else {
+        array_push($arr, NULL);
+    }
+    return $arr;
+}
