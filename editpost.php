@@ -116,7 +116,7 @@ if (isset($_POST["posteditbutton"])) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
-        <title>Edit Post</title>
+        <title><?php if(empty($_SESSION['fullname']) == TRUE) {echo "EDIT POST | User's BLog"; }else { echo $_SESSION['fullname'] . " | EDIT POST"; } ?></title>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
         <link href="resources/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css"/>
@@ -142,10 +142,10 @@ if (isset($_POST["posteditbutton"])) {
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
+                        <li><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
+                        <li><a href="services.php"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
+                        <li><a href="contactus.php"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
+                        <li><a href="features.php"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
                     </ul>
                     <form action="liveblog.php" method="get" class="navbar-form navbar-right">
                         <div class="form-group">
@@ -196,7 +196,7 @@ if (isset($_POST["posteditbutton"])) {
                             <li ><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admin's</a></li>
                             <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments</a></li>
                             <li ><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog</a></li>
-                            <li ><a href="login.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                            <li ><a href="utilities/logout.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                         </ul>
                     </div>
                     <!-- / Left slide bar -->

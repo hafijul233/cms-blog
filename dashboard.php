@@ -41,10 +41,10 @@ if ($result->num_rows > 0) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
-        <title>Dashboard</title>
-        <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
-        <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <title><?php if(empty($_SESSION['fullname']) == TRUE) {echo "DASHBOARD | User's BLog"; }else { echo $_SESSION['fullname'] . " | DASHBOARD"; } ?></title>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/dataTables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
         <script src="resources/jquery/jquery-3.2.1.js" ></script>
     </head>
@@ -67,10 +67,10 @@ if ($result->num_rows > 0) {
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
                         <li><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
+                        <li><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
+                        <li><a href="services.php"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
+                        <li><a href="contactus.php"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
+                        <li><a href="features.php"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
                     </ul>
                     <form action="liveblog.php" method="get" class="navbar-form navbar-right">
                         <div class="form-group">
@@ -126,7 +126,7 @@ if ($result->num_rows > 0) {
                                 </a>
                             </li>
                             <li ><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog</a></li>
-                            <li ><a href="login.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                            <li ><a href="utilities/logout.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                         </ul>
                     </div>
                     <!-- / Left slide bar -->
@@ -143,7 +143,7 @@ if ($result->num_rows > 0) {
                                 </span>
                             </div>
                             <div class="panel-body">
-                                <table id="postTable" class="table table-bordered table-striped table-hover display">
+                              <table id="postTable" class="table table-bordered table-striped table-hover display" style="width: 100%;">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -153,7 +153,7 @@ if ($result->num_rows > 0) {
                                             <th>Categories</th>
                                             <th>Comments</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th style="width:74px;">Action</th>
                                             <th>Detail</th>
                                         </tr>
                                     </thead>
@@ -227,6 +227,19 @@ if ($result->num_rows > 0) {
                                     }
                                     ?>
                                     </tbody>
+                                      <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Title</th>
+                                            <th>Date & Time</th>
+                                            <th>Author</th>
+                                            <th>Categories</th>
+                                            <th>Comments</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                            <th>Detail</th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -246,7 +259,8 @@ if ($result->num_rows > 0) {
             <!-- / Footer -->
         </div>
         <script src="resources/bootstrap/js/bootstrap.min.js" ></script>
-        <script src="resources/js/jquery.dataTables.min.js" ></script>
+        <script src="resources/dataTables/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="resources/dataTables/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="resources/js/adminscript.js" ></script>
         <script >
             $(document).ready(function () {

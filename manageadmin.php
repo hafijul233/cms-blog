@@ -141,10 +141,9 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" href="resources/img/icon.png" type="image/png"/>
         <title>Manage Admins</title>
-        <link href="resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-        <link href="resources/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/dataTables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="resources/css/adminstyle.css" rel="stylesheet" type="text/css"/>
         <script src="resources/jquery/jquery-3.2.1.js" ></script>
     </head>
@@ -221,7 +220,7 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
                             <li class="active"><a href="manageadmin.php"><span class="glyphicon glyphicon-user"></span> Manage Admin's</a></li>
                             <li ><a href="comments.php"><span class="glyphicon glyphicon-comment"></span> Comments</a></li>
                             <li ><a href="liveblog.php"><span class="glyphicon glyphicon-equalizer"></span> Live Blog</a></li>
-                            <li ><a href="login.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+                            <li ><a href="utilities/logout.php"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
                         </ul>
                     </div>
                     <!-- / Left slide bar -->
@@ -369,7 +368,8 @@ if (isset($_GET['id']) && isset($_GET['action'])) {
             <!-- / Footer -->
         </div>
         <script src="resources/bootstrap/js/bootstrap.min.js" ></script>
-        <script src="resources/js/jquery.dataTables.min.js" ></script>
+        <script src="resources/dataTables/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="resources/dataTables/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="resources/js/adminscript.js" ></script>
         <script >
             $(document).ready(function () {

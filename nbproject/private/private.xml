@@ -3,9 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/I:/XAMPP/htdocs/Completed/cms-blog/liveblog.php</file>
             <file>file:/I:/XAMPP/htdocs/Completed/cms-blog/detailpost.php</file>
             <file>file:/I:/XAMPP/htdocs/Completed/cms-blog/utilities/dbconnection.php</file>
+=======
+            <file>file:/I:/XAMPP/htdocs/cms-blog/comments.php</file>
+            <file>file:/I:/XAMPP/htdocs/cms-blog/category.php</file>
+            <file>file:/I:/XAMPP/htdocs/cms-blog/utilities/RequiredUtilities.php</file>
+            <file>file:/I:/XAMPP/htdocs/cms-blog/login.php</file>
+            <file>file:/I:/XAMPP/htdocs/cms-blog/utilities/logout.php</file>
+            <file>file:/I:/XAMPP/htdocs/cms-blog/index.php</file>
+            <file>file:/I:/XAMPP/htdocs/cms-blog/manageadmin.php</file>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
         </group>
     </open-files>
 </project-private>

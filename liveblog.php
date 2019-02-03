@@ -2,18 +2,22 @@
 require_once 'utilities/RequiredUtilities.php';
 require_once 'utilities/dbconnection.php';
 
+<<<<<<< HEAD
 //Total Post for Pagination 
 $bloksizes = 5;
 $sql = "SELECT count(`id`) AS `totalposts` FROM `userposts` WHERE `status` = 1";
 $totalposts = selectarray($conn, $sql);
 $totalposts = $totalposts[0]['totalposts'];
 
+=======
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
 //All Post 
 $postslist = array();
 if (isset($_GET['searchbutton'])) {
     $search = $_GET['search'];
 //Only SearchButton Press Empty Value
     if ($search == NULL || $search == ' ') {
+<<<<<<< HEAD
         $postslist = NULL;
 //Run Default Query
 
@@ -25,6 +29,116 @@ if (isset($_GET['searchbutton'])) {
                 . " LIMIT 0,$bloksizes";
 
         $postslist = selectarray($conn, $sql);
+=======
+        $sql = "SELECT "
+                . "`userposts`.`id`, `author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`,"
+                . " `title`, `image`, `post` AS `description`"
+                . " FROM "
+                . "`userposts`, `categories`"
+                . " WHERE "
+                . "`userposts`.`status` = 1 AND `userposts`.`categoryno` = `categories`.`id` "
+                . "ORDER BY `userposts`.`id` DESC ;";
+
+        $result = $conn->query($sql);
+        $postslist = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                array_push($postslist, $row);
+            }
+        } else {
+            array_push($postslist, NULL);
+        }
+    }
+
+//Search ButtonPressed with value
+    else {
+
+        $searchvalues = searchvaliadtor($search);
+
+        $keywords = explode(" ", $searchvalues);
+        $resultCounter = 0;
+        foreach ($keywords as $keyword) {
+            $sql = "SELECT `datatable`.* FROM( "
+                    . "SELECT `userposts`.`id`, `categories`.`name` AS `categoryname`, `author`, `userposts`.`datetime` AS `createtime`,`title`, `post` AS `description`, `image`"
+                    . " FROM `categories`,`userposts`"
+                    . " WHERE `categories`.`id` = `userposts`.`categoryno` AND `userposts`.`status` = 1)AS `datatable`"
+                    . " WHERE  `categoryname` LIKE '%$keyword%'"
+                    . " OR `author` LIKE '%$keyword%'"
+                    . " OR `createtime` LIKE '%$keyword%'"
+                    . " OR `title` LIKE '%$keyword%'"
+                    . " OR `description` LIKE '%$keyword%'"
+                    . " ORDER BY `id` DESC;";
+
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    array_push($postslist, $row);
+                    $resultCounter++;
+                }
+            } else {
+                $error = $conn->error;
+                die;
+                array_push($postslist, NULL);
+            }
+        }
+    }
+} else {
+    if (isset($_GET['page'])) {
+        $pageno = $_GET['page'];
+        if ($pageno <= 0 || $pageno == NULL) {
+            $sql = "SELECT "
+                    . "`userposts`.`id`, `author`, `name` AS `categoryname`, `userposts`.`datetime` AS `createtime`,"
+                    . " `title`, `image`, `post` AS `description`"
+                    . " FROM "
+                    . "`userposts`, `categories`"
+                    . " WHERE "
+                    . "`userposts`.`status` = 1 AND `userposts`.`categoryno` = `categories`.`id` "
+                    . "ORDER BY `userposts`.`id` DESC LIMIT 0,5;";
+        } else {
+            //selsect pages from start to end range
+        }
+    } else {//When user Just Visit Blog Page
+        $sql = "SELECT "
+                . "`userposts`.`id`,"
+                . "`author`,"
+                . " `name` AS `categoryname`,"
+                . " `userposts`.`datetime` AS `createtime`,"
+                . " `title`,"
+                . " `image`,"
+                . " `post` AS `description`"
+                . " FROM "
+                . "`userposts`,"
+                . " `categories`"
+                . " WHERE "
+                . "`userposts`.`status` = 1 "
+                . "AND "
+                . "`userposts`.`categoryno` = `categories`.`id` "
+                . "ORDER BY "
+                . "`userposts`.`id` DESC ;";
+    }
+    $result = $conn->query($sql);
+    $postslist = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($postslist, $row);
+        }
+    } else {
+        array_push($postslist, NULL);
+    }
+}
+
+
+//All category
+$sql = "SELECT `name` "
+        . "FROM `categories` "
+        . "WHERE `categories`.`status` = 1 "
+        . " ORDER BY `created` DESC ;";
+$result = $conn->query($sql);
+$categorylist = array();
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        array_push($categorylist, $row);
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
     }
 //Search ButtonPressed with value
     else {
@@ -147,10 +261,17 @@ $totalposts = $totalposts[0]['totalposts'];
           <ul class="nav navbar-nav">
             <li><a href="dashboard.php"><span class="glyphicon glyphicon-home"></span> Home</a></li>
             <li class="active"><a href="liveblog.php"><span class="glyphicon glyphicon-list-alt"></span> Blog</a></li>
+<<<<<<< HEAD
             <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
             <li><a href="#"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
             <li><a href="#"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
             <li><a href="#"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
+=======
+            <li><a href="about.php"><span class="glyphicon glyphicon-question-sign"></span> About Us</a></li>
+            <li><a href="services.php"><span class="glyphicon glyphicon-gift"></span> Services</a></li>
+            <li><a href="contactus.php"><span class="glyphicon glyphicon-phone"></span> Contact Us</a></li>
+            <li><a href="features.php"><span class="glyphicon glyphicon-cutlery"></span> Features</a></li>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
           </ul>
           <form action="liveblog.php" method="get" class="navbar-form navbar-right">
             <div class="form-group">
@@ -247,6 +368,7 @@ $totalposts = $totalposts[0]['totalposts'];
                 }// foreach loop closing 
                 ?>
                 <center>
+<<<<<<< HEAD
                   <nav class="">
                     <ul class="pagination pagination-lg">
                         <?php
@@ -277,6 +399,13 @@ $totalposts = $totalposts[0]['totalposts'];
                           }
                       }
                       ?>
+=======
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center pagination-lg">
+                      <li id="previous-page">
+                        <a href="javascript:void(0)" aria-label=Previous><span aria-hidden=true>Previous</span></a>
+                      </li>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
                     </ul>
                   </nav>
                 </center>
@@ -286,7 +415,11 @@ $totalposts = $totalposts[0]['totalposts'];
             <div class="row">
               <div class="col-lg-12">
                 <h2 class="blogpost-title text-center">About Me</h2>
+<<<<<<< HEAD
                 <img class="img-responsive img-circle img-icon" src="postcontent/profile-pic/<?php echo $_SESSION['profilepic']; ?>" alt="<?php echo $_SESSION['fullname']; ?>"/>
+=======
+                <img class="img-responsive img-circle img-icon" src="postcontent/profile-pic/<?php if(empty($_SESSION['profilepic']) == TRUE) {$_SESSION['profilepic'] = NULL;} else {echo $_SESSION['profilepic'];} ?>" alt="<?php if(empty($_SESSION['profilepic']) == TRUE) {$_SESSION['profilepic'] = NULL;} else {echo $_SESSION['fullname'];} ?>"/>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
                 <p class="blogpost-description">
                   Lorem Ipsum is simply dummy text of the printing and typesetting
                   industry. Lorem Ipsum has been the industry's standard dummy text
@@ -317,9 +450,13 @@ $totalposts = $totalposts[0]['totalposts'];
                             foreach ($categorylist as $category) {
                                 $counter++;
                                 ?>
+<<<<<<< HEAD
                               <li class="list-category-item">
                                 <a href="liveblog.php?page=1&category=<?php echo $category['name']; ?>"><?php echo $category['name']; ?></a>
                               </li>
+=======
+                              <li class="list-category-item"><a href="liveblog.php?category=<?php echo $category['name']; ?>"><?php echo $category['name']; ?></a></li>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
                               <?php
                               if ($counter > 10)
                                   break;
@@ -341,7 +478,11 @@ $totalposts = $totalposts[0]['totalposts'];
                     </h2>
                   </div>
                   <div class="panel-body">
+<<<<<<< HEAD
                       <?php if (!empty($postslist)) { ?>
+=======
+                        <?php if (!empty($postslist)) { ?>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
                         <ul class="list-category"> 
                             <?php
                             $counter = 0;
@@ -364,7 +505,11 @@ $totalposts = $totalposts[0]['totalposts'];
                           }
                           ?>
                         </ul>
+<<<<<<< HEAD
                     <?php } ?>
+=======
+<?php } ?>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
                   </div>
                 </div>
               </div>
@@ -383,6 +528,10 @@ $totalposts = $totalposts[0]['totalposts'];
       </div>
     </div>
     <!-- / Footer -->
+<<<<<<< HEAD
+=======
+    <script src="resources/js/publicscript.js" ></script>
+>>>>>>> 5ec84035663c9fb59e90f2c4343c62249f58ed3e
     <script src="resources/bootstrap/js/bootstrap.min.js" ></script>
   </body>
 </html>
